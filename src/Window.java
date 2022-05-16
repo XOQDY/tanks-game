@@ -15,7 +15,6 @@ public class Window extends JFrame implements Observer {
     private World world;
     private Renderer renderer;
     private Gui gui;
-    private List<Command> replay = new ArrayList<Command>();
 
     public Window() {
         super();
@@ -38,7 +37,6 @@ public class Window extends JFrame implements Observer {
 
         if(world.isGameOver()) {
             gui.showGameOverLabel();
-            gui.enableReplayButton();
         }
     }
 
@@ -91,15 +89,11 @@ public class Window extends JFrame implements Observer {
 
     class Gui extends JPanel {
 
-        private JLabel tickLabel;
         private JButton startButton;
-        private JButton replayButton;
         private JLabel gameOverLabel;
 
         public Gui() {
             setLayout(new FlowLayout());
-            tickLabel = new JLabel("Tick: 0");
-            add(tickLabel);
             startButton = new JButton("Start");
             startButton.addActionListener(new ActionListener() {
                 @Override
@@ -110,17 +104,6 @@ public class Window extends JFrame implements Observer {
                 }
             });
             add(startButton);
-            replayButton = new JButton("Replay");
-            replayButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    world.start();
-                    replayButton.setEnabled(false);
-//                    Window.this.requestFocus();
-                }
-            });
-            replayButton.setEnabled(false);
-            add(replayButton);
             gameOverLabel = new JLabel("GAME OVER");
             gameOverLabel.setForeground(Color.red);
             gameOverLabel.setVisible(false);
@@ -130,10 +113,6 @@ public class Window extends JFrame implements Observer {
         public void showGameOverLabel() {
             gameOverLabel.setVisible(true);
         }
-
-        public void enableReplayButton() {
-            replayButton.setEnabled(true);
-        }
     }
 
     class Controller extends KeyAdapter {
@@ -142,19 +121,15 @@ public class Window extends JFrame implements Observer {
             if(e.getKeyCode() == KeyEvent.VK_UP) {
                 Command c = new CommandTurnNorth(world.getPlayer());
                 c.execute();
-                replay.add(c);
             } else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
                 Command c = new CommandTurnSouth(world.getPlayer());
                 c.execute();
-                replay.add(c);
             } else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
                 Command c = new CommandTurnWest(world.getPlayer());
                 c.execute();
-                replay.add(c);
             } else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 Command c = new CommandTurnEast(world.getPlayer());
                 c.execute();
-                replay.add(c);
             }
         }
     }
@@ -165,22 +140,3 @@ public class Window extends JFrame implements Observer {
     }
 
 }
-
-//                    Thread replayThread = new Thread() {
-//                        public void run() {
-//                            int replayIndex = 0;
-//                            world.start();
-//                            while (replayIndex < replay.size()) {
-//                                Command c = replay.get(replayIndex);
-//                                if (world.getTick() == c.getTick()) {
-//                                    ++replayIndex;
-//                                    c.execute();
-//                                }
-//                                try {
-//                                    Thread.sleep(100);
-//                                } catch (InterruptedException ex) {
-//                                    ex.printStackTrace();
-//                                }
-//                            }
-//                        }
-//                    }

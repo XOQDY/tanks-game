@@ -4,8 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -70,8 +68,8 @@ public class Window extends JFrame implements Observer {
 
         private void paintPlayer(Graphics g) {
             int perCell = size/world.getSize();
-            int x = world.getPlayer().getX();
-            int y = world.getPlayer().getY();
+            int x = world.getTank().getX();
+            int y = world.getTank().getY();
             g.setColor(Color.green);
             g.fillRect(x * perCell,y * perCell,perCell, perCell);
         }
@@ -119,16 +117,16 @@ public class Window extends JFrame implements Observer {
         @Override
         public void keyPressed(KeyEvent e) {
             if(e.getKeyCode() == KeyEvent.VK_UP) {
-                Command c = new CommandTurnNorth(world.getPlayer());
+                Command c = new CommandTurnNorth(world.getTank());
                 c.execute();
             } else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-                Command c = new CommandTurnSouth(world.getPlayer());
+                Command c = new CommandTurnSouth(world.getTank());
                 c.execute();
             } else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-                Command c = new CommandTurnWest(world.getPlayer());
+                Command c = new CommandTurnWest(world.getTank());
                 c.execute();
             } else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                Command c = new CommandTurnEast(world.getPlayer());
+                Command c = new CommandTurnEast(world.getTank());
                 c.execute();
             }
         }

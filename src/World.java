@@ -5,7 +5,7 @@ public class World extends Observable {
 
     private int size;
 
-    private Player player;
+    private Tank tank;
     private Thread thread;
     private boolean notOver;
     private long delayed = 500;
@@ -15,7 +15,7 @@ public class World extends Observable {
 
     public World(int size) {
         this.size = size;
-        player = new Player(size/2, size/2);
+        tank = new Tank(size/2, size/2);
         enemies = new Enemy[enemyCount];
         Random random = new Random();
         for(int i = 0; i < enemies.length / 2; i++) {
@@ -27,14 +27,14 @@ public class World extends Observable {
     }
 
     public void start() {
-        player.reset();
-        player.setPosition(size/2, size/2);
+        tank.reset();
+        tank.setPosition(size/2, size/2);
         notOver = true;
         thread = new Thread() {
             @Override
             public void run() {
                 while(notOver) {
-                    player.move();
+                    tank.move();
                     checkCollisions();
                     setChanged();
                     notifyObservers();
@@ -50,7 +50,7 @@ public class World extends Observable {
 
     private void checkCollisions() {
         for(Enemy e : enemies) {
-            if(e.hit(player)) {
+            if(e.hit(tank)) {
                 notOver = false;
             }
         }
@@ -68,8 +68,8 @@ public class World extends Observable {
         return size;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Tank getTank() {
+        return tank;
     }
 
     public Enemy[] getEnemies() {

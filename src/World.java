@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Random;
 
@@ -5,6 +7,7 @@ public class World extends Observable {
 
     private int size;
 
+    private BulletPool bulletPool;
     private Player player;
     private Thread thread;
     private boolean notOver;
@@ -12,9 +15,12 @@ public class World extends Observable {
     private int enemyCount = 20;
 
     private Enemy [] enemies;
+    private List<Bullet> bullets;
 
     public World(int size) {
         this.size = size;
+        bullets = new ArrayList<Bullet>();
+        bulletPool = new BulletPool();
         player = new Player(size/2, size/2);
         enemies = new Enemy[enemyCount];
         Random random = new Random();
@@ -35,6 +41,8 @@ public class World extends Observable {
             public void run() {
                 while(notOver) {
                     player.move();
+                    moveBullets();
+                    cleanupBullets();
                     checkCollisions();
                     setChanged();
                     notifyObservers();
@@ -72,11 +80,52 @@ public class World extends Observable {
         return player;
     }
 
+    private void moveBullets() {
+        for(Bullet bullet : bullets) {
+            bullet.move();
+        }
+    }
+
     public Enemy[] getEnemies() {
         return enemies;
     }
 
     public boolean isGameOver() {
         return !notOver;
+    }
+
+    private void cleanupBullets() {
+        List<Bullet> toRemove = new ArrayList<Bullet>();
+        for(Bullet bullet : bullets) {
+            if(bullet.getX() <= 0 ||
+                    bullet.getX() >= size ||
+                    bullet.getY() <= 0 ||
+                    bullet.getY() >= size) {
+                toRemove.add(bullet);
+            }
+        }
+        for(Bullet bullet : toRemove) {
+            bullets.remove(bullet);
+            bulletPool.releaseBullet(bullet);
+        }
+    }
+
+    public List<Bullet> getBullets() {
+        return bullets;
+    }
+
+    public void fire_bullet() {
+        bullets.add(bulletPool.requestBullet(player.getX(), player.getY(), player.getDx(), player.getDy()));
+    }
+
+    public void burstBullets(int x, int y) {
+        bullets.add(bulletPool.requestBullet(x, y, 1, 0));
+        bullets.add(bulletPool.requestBullet(x, y, 0, 1));
+        bullets.add(bulletPool.requestBullet(x, y, -1, 0));
+        bullets.add(bulletPool.requestBullet(x, y, 0, -1));
+        bullets.add(bulletPool.requestBullet(x, y, 1, 1));
+        bullets.add(bulletPool.requestBullet(x, y, 1, -1));
+        bullets.add(bulletPool.requestBullet(x, y, -1, 1));
+        bullets.add(bulletPool.requestBullet(x, y, -1, -1));
     }
 }

@@ -52,6 +52,7 @@ public class Window extends JFrame implements Observer {
             paintGrids(g);
             paintPlayer(g);
             paintEnemies(g);
+            paintBullets(g);
         }
 
         private void paintGrids(Graphics g) {
@@ -83,6 +84,12 @@ public class Window extends JFrame implements Observer {
                 int x = e.getX();
                 int y = e.getY();
                 g.fillRect(x * perCell,y * perCell,perCell, perCell);
+            }
+        }
+
+        private void paintBullets(Graphics g) {
+            for(Bullet bullet : world.getBullets()) {
+                g.fillOval(bullet.getX(), bullet.getY(), 10, 10);
             }
         }
     }
@@ -130,6 +137,9 @@ public class Window extends JFrame implements Observer {
             } else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 Command c = new CommandTurnEast(world.getPlayer());
                 c.execute();
+            } else if (e.getKeyCode() == KeyEvent.VK_Z) {
+                // shoot bullet
+                world.fire_bullet();
             }
         }
     }

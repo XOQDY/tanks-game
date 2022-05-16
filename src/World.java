@@ -9,21 +9,11 @@ public class World extends Observable {
     private Thread thread;
     private boolean notOver;
     private long delayed = 500;
-    private int enemyCount = 20;
-
-    private Enemy [] enemies;
 
     public World(int size) {
         this.size = size;
         tank = new Tank(size/2, size/2);
-        enemies = new Enemy[enemyCount];
         Random random = new Random();
-        for(int i = 0; i < enemies.length / 2; i++) {
-            enemies[i] = new Enemy(random.nextInt(size), random.nextInt(size));
-        }
-        for(int i = enemies.length / 2; i < enemies.length; i++) {
-            enemies[i] = new EnemyMoving(random.nextInt(size), size);
-        }
     }
 
     public void start() {
@@ -35,26 +25,15 @@ public class World extends Observable {
             public void run() {
                 while(notOver) {
                     tank.move();
-                    checkCollisions();
                     setChanged();
                     notifyObservers();
                     waitFor(delayed);
-                    for (Enemy e: enemies) {
-                        e.moving();
-                    }
                 }
             }
         };
         thread.start();
     }
 
-    private void checkCollisions() {
-        for(Enemy e : enemies) {
-            if(e.hit(tank)) {
-                notOver = false;
-            }
-        }
-    }
 
     private void waitFor(long delayed) {
         try {
@@ -70,10 +49,6 @@ public class World extends Observable {
 
     public Tank getTank() {
         return tank;
-    }
-
-    public Enemy[] getEnemies() {
-        return enemies;
     }
 
     public boolean isGameOver() {

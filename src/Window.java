@@ -39,6 +39,8 @@ public class Window extends JFrame implements Observer {
     }
 
     class Renderer extends JPanel {
+        public static final int CELL_PIXEL_SIZE = 20;
+        private Image imageTank;
 
         public Renderer() {
             setDoubleBuffered(true);
@@ -49,7 +51,6 @@ public class Window extends JFrame implements Observer {
             super.paint(g);
             paintGrids(g);
             paintPlayer(g);
-            paintEnemies(g);
         }
 
         private void paintGrids(Graphics g) {
@@ -67,22 +68,13 @@ public class Window extends JFrame implements Observer {
         }
 
         private void paintPlayer(Graphics g) {
+            imageTank = new ImageIcon("img/tank.png").getImage();
             int perCell = size/world.getSize();
             int x = world.getTank().getX();
             int y = world.getTank().getY();
-            g.setColor(Color.green);
-            g.fillRect(x * perCell,y * perCell,perCell, perCell);
+            g.drawImage(imageTank, x * perCell, y * perCell, CELL_PIXEL_SIZE, CELL_PIXEL_SIZE, null, null);
         }
 
-        private void paintEnemies(Graphics g) {
-            int perCell = size/world.getSize();
-            g.setColor(Color.red);
-            for(Enemy e : world.getEnemies()) {
-                int x = e.getX();
-                int y = e.getY();
-                g.fillRect(x * perCell,y * perCell,perCell, perCell);
-            }
-        }
     }
 
     class Gui extends JPanel {

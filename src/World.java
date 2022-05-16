@@ -3,7 +3,6 @@ import java.util.Random;
 
 public class World extends Observable {
 
-    private int tick;
     private int size;
 
     private Player player;
@@ -16,7 +15,6 @@ public class World extends Observable {
 
     public World(int size) {
         this.size = size;
-        tick = 0;
         player = new Player(size/2, size/2);
         enemies = new Enemy[enemyCount];
         Random random = new Random();
@@ -31,13 +29,11 @@ public class World extends Observable {
     public void start() {
         player.reset();
         player.setPosition(size/2, size/2);
-        tick = 0;
         notOver = true;
         thread = new Thread() {
             @Override
             public void run() {
                 while(notOver) {
-                    tick++;
                     player.move();
                     checkCollisions();
                     setChanged();
@@ -66,10 +62,6 @@ public class World extends Observable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    public int getTick() {
-        return tick;
     }
 
     public int getSize() {

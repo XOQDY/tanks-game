@@ -35,13 +35,7 @@ public class Window extends JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         renderer.repaint();
-        gui.updateTick(world.getTick());
 
-        for (Command c : replay) {
-            if (c.getTick() == world.getTick()) {
-                c.execute();
-            }
-        }
         if(world.isGameOver()) {
             gui.showGameOverLabel();
             gui.enableReplayButton();
@@ -133,10 +127,6 @@ public class Window extends JFrame implements Observer {
             add(gameOverLabel);
         }
 
-        public void updateTick(int tick) {
-            tickLabel.setText("Tick: " + tick);
-        }
-
         public void showGameOverLabel() {
             gameOverLabel.setVisible(true);
         }
@@ -150,23 +140,19 @@ public class Window extends JFrame implements Observer {
         @Override
         public void keyPressed(KeyEvent e) {
             if(e.getKeyCode() == KeyEvent.VK_UP) {
-                Command c = new CommandTurnNorth(world.getPlayer(), world.getTick());
+                Command c = new CommandTurnNorth(world.getPlayer());
                 c.execute();
                 replay.add(c);
             } else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-                Command c = new CommandTurnSouth(world.getPlayer(), world.getTick());
+                Command c = new CommandTurnSouth(world.getPlayer());
                 c.execute();
                 replay.add(c);
             } else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-                Command c = new CommandTurnWest(world.getPlayer(), world.getTick());
+                Command c = new CommandTurnWest(world.getPlayer());
                 c.execute();
                 replay.add(c);
             } else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                Command c = new CommandTurnEast(world.getPlayer(), world.getTick());
-                c.execute();
-                replay.add(c);
-            } else if (e.getKeyCode() == KeyEvent.VK_Z) {
-                Command c = new CommandToOrigin(world.getPlayer(), world.getTick(), world.getSize());
+                Command c = new CommandTurnEast(world.getPlayer());
                 c.execute();
                 replay.add(c);
             }

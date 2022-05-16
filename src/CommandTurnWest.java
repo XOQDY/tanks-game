@@ -1,7 +1,7 @@
 public class CommandTurnWest extends Command{
 
-    public CommandTurnWest(Player player, int tick) {
-        super(player, tick);
+    public CommandTurnWest(Player player) {
+        super(player);
     }
 
     @Override

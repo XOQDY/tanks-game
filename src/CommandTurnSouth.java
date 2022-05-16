@@ -1,8 +1,8 @@
 public class CommandTurnSouth extends Command{
 
 
-    public CommandTurnSouth(Player player, int tick) {
-        super(player, tick);
+    public CommandTurnSouth(Player player) {
+        super(player);
     }
 
     @Override

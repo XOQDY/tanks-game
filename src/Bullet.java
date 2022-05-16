@@ -1,38 +1,16 @@
-public class Bullet {
+public class Bullet extends WObject{
 
-    private int x;
-    private int y;
+    public Bullet() {
+    }
 
-    private int dx;
-    private int dy;
-
-    private int speed = 10;
-
-    public Bullet(int x, int y, int dx, int dy) {
-        System.out.println("Performance HIT!!!");
-        this.x = x;
-        this.y = y;
-        this.dx = dx;
-        this.dy = dy;
+    public Bullet(int x, int y) {
+        super(x, y);
+        setSpeed(2);
     }
 
     public void refreshState(int x, int y, int dx, int dy) {
-        this.x = x;
-        this.y = y;
-        this.dx = dx;
-        this.dy = dy;
-    }
-
-    public void move() {
-        x += dx * speed;
-        y += dy * speed;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
+        setPosition(x, y);
+        setDx(dx);
+        setDy(dy);
     }
 }

@@ -7,7 +7,7 @@ public class BulletPool {
     public BulletPool() {
         int size = 10;
         for(int i = 0; i < size; i ++) {
-            bullets.add(new Bullet(-999, -999, 0, 0));
+            bullets.add(new Bullet(-999, -999));
         }
     }
 

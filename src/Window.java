@@ -51,7 +51,6 @@ public class Window extends JFrame implements Observer {
             super.paint(g);
             paintGrids(g);
             paintPlayer(g);
-            paintEnemies(g);
             paintBullets(g);
         }
 
@@ -77,19 +76,10 @@ public class Window extends JFrame implements Observer {
             g.fillRect(x * perCell,y * perCell,perCell, perCell);
         }
 
-        private void paintEnemies(Graphics g) {
-            int perCell = size/world.getSize();
-            g.setColor(Color.red);
-            for(Enemy e : world.getEnemies()) {
-                int x = e.getX();
-                int y = e.getY();
-                g.fillRect(x * perCell,y * perCell,perCell, perCell);
-            }
-        }
-
         private void paintBullets(Graphics g) {
+            int perCell = size/world.getSize();
             for(Bullet bullet : world.getBullets()) {
-                g.fillOval(bullet.getX(), bullet.getY(), 10, 10);
+                g.fillOval((bullet.getX() * perCell) + (perCell / 4), (bullet.getY() * perCell) + (perCell / 4), 10, 10);
             }
         }
     }

@@ -39,21 +39,6 @@ public abstract class WObject {
         dy = 0;
     }
 
-    public boolean isTurnNorth(){
-        return dx == 1 && dy ==-1;
-    }
-
-    public boolean isTurnSouth(){
-        return dx == 0 && dy == 1;
-    }
-
-    public boolean isTurnWest(){
-        return dx == -1 && dy == 0;
-    }
-
-    public boolean isEast(){
-        return dx == 1 && dy ==0;}
-
     public void stop() {
         dx = 0;
         dy = 0;

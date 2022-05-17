@@ -1,13 +1,13 @@
 public abstract class Command {
-    private Tank tank;  // Command know the receiver
+    private Player player;  // Command know the receiver
 
     // Constructor
-    public Command(Tank tank) {
-        this.tank = tank;
+    public Command(Player player) {
+        this.player = player;
     }
 
-    public Tank getTank() {
-        return tank;
+    public Player getPlayer() {
+        return player;
     }
 
     public abstract void execute();

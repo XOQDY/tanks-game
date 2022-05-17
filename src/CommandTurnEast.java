@@ -1,12 +1,11 @@
 public class CommandTurnEast extends Command{
 
-    public CommandTurnEast(Tank tank) {
-        super(tank);
+    public CommandTurnEast(Player player) {
+        super(player);
     }
 
     @Override
     public void execute() {
-        getTank().turnEast();
-        getTank().getPosition(getTank());
+        getPlayer().turnEast();
     }
 }

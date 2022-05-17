@@ -6,6 +6,11 @@ public abstract class WObject {
     private int dx;
     private int dy;
 
+    private int speed;
+
+    private boolean isAlive = true;
+    private boolean Fired = false;
+
     public WObject() {
     }
 
@@ -47,12 +52,16 @@ public abstract class WObject {
     }
 
     public boolean isEast(){
-        return dx == 1 && dy ==0;
+        return dx == 1 && dy ==0;}
+
+    public void stop() {
+        dx = 0;
+        dy = 0;
     }
 
     public void move() {
-        this.x += dx;
-        this.y += dy;
+        this.x += dx * speed;
+        this.y += dy * speed;
     }
 
     public int getX() {
@@ -63,13 +72,37 @@ public abstract class WObject {
         return y;
     }
 
-    public void reset() {
-        dx = dy = 0;
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public boolean isFired() {
+        return Fired;
+    }
+
+    public void setDx(int dx) {
+        this.dx = dx;
+    }
+
+    public void setDy(int dy) {
+        this.dy = dy;
     }
 
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    public void setFired(boolean fired) {
+        Fired = fired;
     }
 
     public boolean hit(WObject wObj) {

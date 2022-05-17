@@ -1,13 +1,12 @@
 public class CommandTurnSouth extends Command{
 
 
-    public CommandTurnSouth(Tank tank) {
-        super(tank);
+    public CommandTurnSouth(Player player) {
+        super(player);
     }
 
     @Override
     public void execute() {
-        getTank().turnSouth();
-        getTank().getPosition(getTank());
+        getPlayer().turnSouth();
     }
 }

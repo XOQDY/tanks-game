@@ -27,7 +27,7 @@ public class Window extends JFrame implements Observer {
         add(gui, BorderLayout.SOUTH);
         world = new World(25);
         world.addObserver(this);
-        setSize(size, size);
+        setSize(size+15, size+65);
         setAlwaysOnTop(true);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -39,7 +39,15 @@ public class Window extends JFrame implements Observer {
 
         if(world.isGameOver()) {
             gui.showGameOverLabel();
+            JOptionPane.showMessageDialog(Window.this,"Do you want to Replay?","GameOver", JOptionPane.QUESTION_MESSAGE );
+            world = new World(25);
+            world.addObserver(this);
+            addKeyListener(new Controller());
+            gui.singlePlayer.setEnabled(true);
+            gui.multiPlayer.setEnabled(true);
+            renderer.repaint();
         }
+
     }
 
     class Renderer extends JPanel {

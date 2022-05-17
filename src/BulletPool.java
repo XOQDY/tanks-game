@@ -11,9 +11,9 @@ public class BulletPool {
         }
     }
 
-    public Bullet requestBullet(int x, int y, int dx, int dy) {
+    public Bullet requestBullet(int x, int y, int dx, int dy, Player owner) {
         Bullet bullet = bullets.remove(0);
-        bullet.refreshState(x, y, dx, dy);
+        bullet.refreshState(x, y, dx, dy, owner);
         return bullet;
     }
 

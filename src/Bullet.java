@@ -1,5 +1,7 @@
 public class Bullet extends WObject{
 
+    private Player owner = null;
+
     public Bullet() {
     }
 
@@ -8,9 +10,14 @@ public class Bullet extends WObject{
         setSpeed(1);
     }
 
-    public void refreshState(int x, int y, int dx, int dy) {
+    public void refreshState(int x, int y, int dx, int dy, Player owner) {
         setPosition(x, y);
         setDx(dx);
         setDy(dy);
+        this.owner = owner;
+    }
+
+    public Player getOwner() {
+        return owner;
     }
 }

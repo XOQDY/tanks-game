@@ -33,6 +33,7 @@ public class World extends Observable {
         Random random = new Random();
         for(int i = 0; i < enemies.length; i++) {
             enemies[i] = new Enemy(random.nextInt(size), random.nextInt(size));
+            tanks.add(enemies[i]);
         }
     }
 
@@ -52,6 +53,7 @@ public class World extends Observable {
                     moveBullets();
                     cleanupBullets();
                     checkHit();
+                    checkOver();
                     setChanged();
                     notifyObservers();
                     waitFor(delayed);
@@ -74,6 +76,7 @@ public class World extends Observable {
                     moveBullets();
                     cleanupBullets();
                     checkHit();
+                    checkOver();
                     setChanged();
                     notifyObservers();
                     waitFor(delayed);
@@ -92,20 +95,31 @@ public class World extends Observable {
     }
 
     private void checkHit() {
-        List<Bullet> toRemove = new ArrayList<Bullet>();
+        List<Bullet> toRemoveBullet = new ArrayList<Bullet>();
+        List<Player> toRemoveTank = new ArrayList<Player>();
         for(Bullet bullet : bullets) {
             for (Player p : tanks) {
                 if(bullet.hit(p)) {
-                    toRemove.add(bullet);
+                    toRemoveBullet.add(bullet);
+                    toRemoveTank.add(p);
                     p.setAlive(false);
-                    notOver = false;
                 }
             }
 
         }
-        for(Bullet bullet : toRemove) {
+        for(Bullet bullet : toRemoveBullet) {
+            bullet.getOwner().setFired(false);
             bullets.remove(bullet);
             bulletPool.releaseBullet(bullet);
+        }
+        for(Player tank : toRemoveTank) {
+            tanks.remove(tank);
+        }
+    }
+
+    private void checkOver() {
+        if (tanks.size() == 1) {
+            notOver = false;
         }
     }
 
@@ -146,6 +160,7 @@ public class World extends Observable {
             }
         }
         for(Bullet bullet : toRemove) {
+            bullet.getOwner().setFired(false);
             bullets.remove(bullet);
             bulletPool.releaseBullet(bullet);
         }
@@ -156,6 +171,9 @@ public class World extends Observable {
     }
 
     public void fire_bullet(Player player) {
-        bullets.add(bulletPool.requestBullet(player.getX(), player.getY(), player.xDirection(), player.yDirection()));
+        if (!player.isFired()) {
+            bullets.add(bulletPool.requestBullet(player.getX(), player.getY(), player.xDirection(), player.yDirection(), player));
+            player.setFired(true);
+        }
     }
 }

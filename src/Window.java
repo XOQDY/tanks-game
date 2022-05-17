@@ -56,7 +56,7 @@ public class Window extends JFrame implements Observer {
             paintPlayer1(g);
             if (single) {
                 paintEnemies(g);
-            } else if (multi) {
+            } else if (multi && world.getPlayer2().isAlive()) {
                 paintPlayer2(g);
             }
             paintBullets(g);
@@ -112,18 +112,21 @@ public class Window extends JFrame implements Observer {
         private void paintEnemies(Graphics g) {
             int perCell = size/world.getSize();
             for(Enemy e : world.getEnemies()) {
-                int x = e.getX();
-                int y = e.getY();
-                if (e.sameState("north")) {
-                    imageTank = new ImageIcon("image/tank3/tank_north.png").getImage();
-                } else if (e.sameState("south")) {
-                    imageTank = new ImageIcon("image/tank3/tank_south.png").getImage();
-                } else if (e.sameState("west")) {
-                    imageTank = new ImageIcon("image/tank3/tank_west.png").getImage();
-                } else if (e.sameState("east")) {
-                    imageTank = new ImageIcon("image/tank3/tank_east.png").getImage();
+                if (e.isAlive()) {
+                    int x = e.getX();
+                    int y = e.getY();
+                    if (e.sameState("north")) {
+                        imageTank = new ImageIcon("image/tank3/tank_north.png").getImage();
+                    } else if (e.sameState("south")) {
+                        imageTank = new ImageIcon("image/tank3/tank_south.png").getImage();
+                    } else if (e.sameState("west")) {
+                        imageTank = new ImageIcon("image/tank3/tank_west.png").getImage();
+                    } else if (e.sameState("east")) {
+                        imageTank = new ImageIcon("image/tank3/tank_east.png").getImage();
+                    }
+                    g.drawImage(imageTank, x * perCell, y * perCell, CELL_PIXEL_SIZE, CELL_PIXEL_SIZE, null, null);
                 }
-                g.drawImage(imageTank, x * perCell, y * perCell, CELL_PIXEL_SIZE, CELL_PIXEL_SIZE, null, null);
+
             }
         }
 
@@ -152,6 +155,7 @@ public class Window extends JFrame implements Observer {
                     world.startSingle();
                     single = true;
                     singlePlayer.setEnabled(false);
+                    multiPlayer.setEnabled(false);
                     Window.this.requestFocus();
                 }
             });
@@ -163,6 +167,7 @@ public class Window extends JFrame implements Observer {
                     setMultiPlayer();
                     world.startMulti();
                     multi = true;
+                    singlePlayer.setEnabled(false);
                     multiPlayer.setEnabled(false);
                     Window.this.requestFocus();
                 }

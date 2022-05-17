@@ -7,5 +7,6 @@ public class CommandTurnEast extends Command{
     @Override
     public void execute() {
         getTank().turnEast();
+        getTank().getPosition(getTank());
     }
 }

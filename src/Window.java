@@ -75,7 +75,7 @@ public class Window extends JFrame implements Observer {
             int perCell = size/world.getSize();
             int x = world.getTank().getX();
             int y = world.getTank().getY();
-            g.drawImage(imageTank, x * perCell, y * perCell, CELL_PIXEL_SIZE, CELL_PIXEL_SIZE, null, null);
+            g.drawImage(world.getTank().getImageTank(), x * perCell, y * perCell, CELL_PIXEL_SIZE, CELL_PIXEL_SIZE, null, null);
         }
 
         private void paintBricks(Graphics g){

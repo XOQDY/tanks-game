@@ -22,7 +22,7 @@ public class World extends Observable {
 
     public World(int size) {
         this.size = size;
-        blocks = new Block[size][size];
+        blocks = new Block[size+1][size+1];
         initBlock();
         tanks = new ArrayList<Player>();
         bullets = new ArrayList<Bullet>();
@@ -49,7 +49,7 @@ public class World extends Observable {
         enemies = new Enemy[enemyCount];
         for(int i = 0; i < enemies.length; i++) {
             int[] position = randomSpawn();
-            enemies[i] = new Enemy(position[0], position[1]);
+            enemies[i] = new Enemy(position[0], position[1], new RandomStrategy());
             tanks.add(enemies[i]);
         }
     }
@@ -76,6 +76,14 @@ public class World extends Observable {
                     setChanged();
                     notifyObservers();
                     waitFor(delayed);
+                    for (Enemy e : enemies) {
+                        Command command = e.moving(World.this);
+                        if (command != null) {
+                            command.execute();
+                        }
+                        e.move();
+                        checkCollisions(e);
+                    }
                 }
             }
         };
@@ -216,8 +224,7 @@ public class World extends Observable {
                     bullet.getY() <= 0 ||
                     bullet.getY() >= size) {
                 toRemove.add(bullet);
-            }
-            if (blocks[bullet.getX()][bullet.getY()] != null && !(blocks[bullet.getX()][bullet.getY()].isPenetrable())) {
+            }else if (blocks[bullet.getX()][bullet.getY()] != null && !(blocks[bullet.getX()][bullet.getY()].isPenetrable())) {
                 if (blocks[bullet.getX()][bullet.getY()].isDestructible()) {
                     blocks[bullet.getX()][bullet.getY()] = null;
                 }

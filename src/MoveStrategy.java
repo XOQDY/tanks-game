@@ -1,2 +1,3 @@
 public interface MoveStrategy {
-    MoveCommand getNextMoveCommand(World world, Player myPlayer);}
+    Command getNextMoveCommand(World world, Player myPlayer);
+}

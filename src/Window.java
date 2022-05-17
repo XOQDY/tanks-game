@@ -4,8 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -50,7 +48,8 @@ public class Window extends JFrame implements Observer {
         public void paint(Graphics g) {
             super.paint(g);
             paintGrids(g);
-            paintPlayer(g);
+            paintPlayer1(g);
+            paintPlayer2(g);
             paintBullets(g);
         }
 
@@ -68,16 +67,25 @@ public class Window extends JFrame implements Observer {
             }
         }
 
-        private void paintPlayer(Graphics g) {
+        private void paintPlayer1(Graphics g) {
             int perCell = size/world.getSize();
-            int x = world.getPlayer().getX();
-            int y = world.getPlayer().getY();
+            int x = world.getPlayer1().getX();
+            int y = world.getPlayer1().getY();
             g.setColor(Color.green);
-            g.fillRect((x * perCell) / 6,(y * perCell) / 6,perCell, perCell);
+            g.fillRect(x * perCell,y * perCell,perCell, perCell);
+        }
+
+        private void paintPlayer2(Graphics g) {
+            int perCell = size/world.getSize();
+            int x = world.getPlayer2().getX();
+            int y = world.getPlayer2().getY();
+            g.setColor(Color.red);
+            g.fillRect(x * perCell,y * perCell,perCell, perCell);
         }
 
         private void paintBullets(Graphics g) {
             int perCell = size/world.getSize();
+            g.setColor(Color.gray);
             for(Bullet bullet : world.getBullets()) {
                 g.fillOval((bullet.getX() * perCell) + (perCell / 4), (bullet.getY() * perCell) + (perCell / 4), 10, 10);
             }
@@ -117,31 +125,58 @@ public class Window extends JFrame implements Observer {
         @Override
         public void keyPressed(KeyEvent e) {
             if(e.getKeyCode() == KeyEvent.VK_UP) {
-                Command c = new CommandTurnNorth(world.getPlayer());
+                Command c = new CommandTurnNorth(world.getPlayer1());
                 c.execute();
             } else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-                Command c = new CommandTurnSouth(world.getPlayer());
+                Command c = new CommandTurnSouth(world.getPlayer1());
                 c.execute();
             } else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-                Command c = new CommandTurnWest(world.getPlayer());
+                Command c = new CommandTurnWest(world.getPlayer1());
                 c.execute();
             } else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                Command c = new CommandTurnEast(world.getPlayer());
+                Command c = new CommandTurnEast(world.getPlayer1());
                 c.execute();
-            } else if (e.getKeyCode() == KeyEvent.VK_Z) {
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_W) {
+                Command c = new CommandTurnNorth(world.getPlayer2());
+                c.execute();
+            } else if(e.getKeyCode() == KeyEvent.VK_S) {
+                Command c = new CommandTurnSouth(world.getPlayer2());
+                c.execute();
+            } else if(e.getKeyCode() == KeyEvent.VK_A) {
+                Command c = new CommandTurnWest(world.getPlayer2());
+                c.execute();
+            } else if(e.getKeyCode() == KeyEvent.VK_D) {
+                Command c = new CommandTurnEast(world.getPlayer2());
+                c.execute();
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_SLASH) {
                 // shoot bullet
-                world.fire_bullet();
+                world.fire_bullet(world.getPlayer1());
+            }
+            if (e.getKeyCode() == KeyEvent.VK_E) {
+                world.fire_bullet(world.getPlayer2());
             }
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            Player player = world.getPlayer();
-            if ((e.getKeyCode() == KeyEvent.VK_UP && player.sameState("north"))
-                    || (e.getKeyCode() == KeyEvent.VK_DOWN && player.sameState("south"))
-                    || (e.getKeyCode() == KeyEvent.VK_LEFT && player.sameState("west"))
-                    || (e.getKeyCode() == KeyEvent.VK_RIGHT && player.sameState("east"))){
-                Command c = new CommandStop(world.getPlayer());
+            Player player1 = world.getPlayer1();
+            Player player2 = world.getPlayer2();
+            if ((e.getKeyCode() == KeyEvent.VK_UP && player1.sameState("north"))
+                    || (e.getKeyCode() == KeyEvent.VK_DOWN && player1.sameState("south"))
+                    || (e.getKeyCode() == KeyEvent.VK_LEFT && player1.sameState("west"))
+                    || (e.getKeyCode() == KeyEvent.VK_RIGHT && player1.sameState("east"))){
+                Command c = new CommandStop(world.getPlayer1());
+                c.execute();
+            }
+            if ((e.getKeyCode() == KeyEvent.VK_W && player2.sameState("north"))
+                    || (e.getKeyCode() == KeyEvent.VK_S && player2.sameState("south"))
+                    || (e.getKeyCode() == KeyEvent.VK_A && player2.sameState("west"))
+                    || (e.getKeyCode() == KeyEvent.VK_D && player2.sameState("east"))){
+                Command c = new CommandStop(world.getPlayer2());
                 c.execute();
             }
         }

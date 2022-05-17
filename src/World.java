@@ -7,7 +7,7 @@ public class World extends Observable {
     private int size;
 
     private BulletPool bulletPool;
-    private Player player;
+    private Player player1, player2;
     private Thread thread;
     private boolean notOver;
     private long delayed = 30;
@@ -18,17 +18,20 @@ public class World extends Observable {
         this.size = size;
         bullets = new ArrayList<Bullet>();
         bulletPool = new BulletPool();
-        player = new Player(size/2, size/2);
+        player1 = new Player(size/2, size/2);
+        player2 = new Player(size/4, size/4);
     }
 
     public void start() {
-        player.setPosition(size/2, size/2);
+        player1.setPosition(size/2, size/2);
+        player2.setPosition(size/4, size/4);
         notOver = true;
         thread = new Thread() {
             @Override
             public void run() {
                 while(notOver) {
-                    player.move();
+                    player1.move();
+                    player2.move();
                     moveBullets();
                     cleanupBullets();
                     setChanged();
@@ -52,8 +55,12 @@ public class World extends Observable {
         return size;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
     }
 
     private void moveBullets() {
@@ -86,7 +93,7 @@ public class World extends Observable {
         return bullets;
     }
 
-    public void fire_bullet() {
-        bullets.add(bulletPool.requestBullet(player.getX(), player.getY(), player.getDx(), player.getDy()));
+    public void fire_bullet(Player player) {
+        bullets.add(bulletPool.requestBullet(player.getX(), player.getY(), player.xDirection(), player.yDirection()));
     }
 }

@@ -15,35 +15,52 @@ public class World extends Observable {
     private int enemyCount = 3;
 
     private Enemy [] enemies;
+    private Block [][] blocks;
 
     private List<Player> tanks;
     private List<Bullet> bullets;
 
     public World(int size) {
         this.size = size;
+        blocks = new Block[size][size];
+        initBlock();
         tanks = new ArrayList<Player>();
         bullets = new ArrayList<Bullet>();
         bulletPool = new BulletPool();
-        player1 = new Player(size/2, size/2);
+        player1 = new Player(-999, -999);
         tanks.add(player1);
+    }
+
+    private void initBlock() {
+        Map map = new Map();
+        for (int [] position : map.bricks) {
+            blocks[position[1]][position[0]] = new Brick(position[1], position[0]);
+        }
+        for (int [] position : map.trees) {
+            blocks[position[1]][position[0]] = new Tree(position[1], position[0]);
+        }
+        for (int [] position : map.steels) {
+            blocks[position[1]][position[0]] = new Steel(position[1], position[0]);
+        }
     }
 
     public void setWorldSingle() {
         enemies = new Enemy[enemyCount];
-        Random random = new Random();
         for(int i = 0; i < enemies.length; i++) {
-            enemies[i] = new Enemy(random.nextInt(size), random.nextInt(size));
+            int[] position = randomSpawn();
+            enemies[i] = new Enemy(position[0], position[1]);
             tanks.add(enemies[i]);
         }
     }
 
     public void setWorldMulti() {
-        player2 = new Player(size/4, size/4);
+        player2 = new Player(-999, -999);
         tanks.add(player2);
     }
 
     public void startSingle() {
-        player1.setPosition(size/2, size/2);
+        int[] position = randomSpawn();
+        player1.setPosition(position[0], position[1]);
         notOver = true;
         thread = new Thread() {
             @Override
@@ -65,8 +82,10 @@ public class World extends Observable {
     }
 
     public void startMulti() {
-        player1.setPosition(size/2, size/2);
-        player2.setPosition(size/4, size/4);
+        int[] position = randomSpawn();
+        player1.setPosition(position[0], position[1]);
+        position = randomSpawn();
+        player2.setPosition(position[0], position[1]);
         notOver = true;
         thread = new Thread() {
             @Override
@@ -97,11 +116,26 @@ public class World extends Observable {
         }
     }
 
+    private int[] randomSpawn() {
+        Random random = new Random();
+        int[] position = new int[2];
+        position[0] = random.nextInt(size);
+        position[1] = random.nextInt(size);
+        while (blocks[position[0]][position[1]] != null) {
+            position[0] = random.nextInt(size);
+            position[1] = random.nextInt(size);
+        }
+        return position;
+    }
+
     private void checkCollisions(Player player) {
         for (Player tank : tanks) {
             if (player != tank && player.hit(tank)) {
                 player.moveBack();
             }
+        }
+        if (blocks[player.getX()][player.getY()] != null && !(blocks[player.getX()][player.getY()] instanceof Tree)) {
+            player.moveBack();
         }
     }
 
@@ -150,6 +184,10 @@ public class World extends Observable {
         return enemies;
     }
 
+    public Block[][] getBlocks() {
+        return blocks;
+    }
+
     private void moveBullets() {
         for(Bullet bullet : bullets) {
             bullet.move();
@@ -167,6 +205,12 @@ public class World extends Observable {
                     bullet.getX() >= size ||
                     bullet.getY() <= 0 ||
                     bullet.getY() >= size) {
+                toRemove.add(bullet);
+            }
+            if (blocks[bullet.getX()][bullet.getY()] != null && !(blocks[bullet.getX()][bullet.getY()] instanceof Tree)) {
+                if (blocks[bullet.getX()][bullet.getY()] instanceof Brick) {
+                    blocks[bullet.getX()][bullet.getY()] = null;
+                }
                 toRemove.add(bullet);
             }
         }

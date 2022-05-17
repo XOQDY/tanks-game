@@ -1,5 +1,8 @@
 public class Enemy extends Player {
 
+    public Enemy() {
+    }
+
     public Enemy(int x, int y) {
         super(x, y);
     }

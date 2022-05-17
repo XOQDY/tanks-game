@@ -53,6 +53,7 @@ public class Window extends JFrame implements Observer {
         public void paint(Graphics g) {
             super.paint(g);
             paintGrids(g);
+            paintBlock(g);
             paintPlayer1(g);
             if (single) {
                 paintEnemies(g);
@@ -64,15 +65,41 @@ public class Window extends JFrame implements Observer {
 
         private void paintGrids(Graphics g) {
             // Background
-            g.setColor(Color.lightGray);
+            g.setColor(Color.black);
             g.fillRect(0, 0, size, size);
 
             // Lines
-            g.setColor(Color.black);
+//            g.setColor(Color.black);
+//            int perCell = size/world.getSize();
+//            for(int i = 0; i < world.getSize(); i++) {
+//                g.drawLine(i * perCell, 0, i * perCell, size);
+//                g.drawLine(0, i * perCell, size, i * perCell);
+//            }
+        }
+
+        private void paintBlock(Graphics g) {
+            Image brick = new ImageIcon("image/block/brick.jpg").getImage();
+            Image steel = new ImageIcon("image/block/steel.jpg").getImage();
+            Image tree = new ImageIcon("image/block/tree.jpg").getImage();
+
             int perCell = size/world.getSize();
-            for(int i = 0; i < world.getSize(); i++) {
-                g.drawLine(i * perCell, 0, i * perCell, size);
-                g.drawLine(0, i * perCell, size, i * perCell);
+            int x;
+            int y;
+            for (Block[] blocks : world.getBlocks()) {
+                for (Block block : blocks) {
+                    if (block != null) {
+                        x = block.getX();
+                        y = block.getY();
+                        if (block instanceof Brick) {
+                            g.drawImage(brick, x * perCell, y * perCell, CELL_PIXEL_SIZE, CELL_PIXEL_SIZE, null, null);
+                        } else if (block instanceof Steel) {
+                            g.drawImage(steel, x * perCell, y * perCell, CELL_PIXEL_SIZE, CELL_PIXEL_SIZE, null, null);
+                        } else if (block instanceof Tree) {
+                            g.drawImage(tree, x * perCell, y * perCell, CELL_PIXEL_SIZE, CELL_PIXEL_SIZE, null, null);
+                        }
+                    }
+
+                }
             }
         }
 

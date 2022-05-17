@@ -13,8 +13,13 @@ public class World extends Observable {
 
     private int steelsCount = 10;
 
+    private Trees [] trees;
+    private int treesCount=20;
+
     private Thread thread;
+
     private boolean notOver;
+
     private long delayed = 500;
 
     public World(int size) {
@@ -22,12 +27,16 @@ public class World extends Observable {
         tank = new Tank(size/2, size/2);
         bricks = new Bricks[bricksCount];
         steels = new Steel[steelsCount];
+        trees = new Trees[treesCount];
         Random random = new Random();
         for (int i = 0; i < bricks.length; i++){
             bricks[i] = new Bricks(random.nextInt(size), random.nextInt(size));
         }
         for (int i = 0; i < steels.length; i++){
             steels[i] = new Steel(random.nextInt(size), random.nextInt(size));
+        }
+        for (int i = 0; i < trees.length; i++){
+            trees[i] = new Trees(random.nextInt(size), random.nextInt(size));
         }
     }
 
@@ -72,6 +81,10 @@ public class World extends Observable {
 
     public Steel[] getSteels(){
         return steels;
+    }
+
+    public Trees[] getTrees(){
+        return trees;
     }
 
     public boolean isGameOver() {

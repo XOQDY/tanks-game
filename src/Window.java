@@ -40,7 +40,7 @@ public class Window extends JFrame implements Observer {
 
     class Renderer extends JPanel {
         public static final int CELL_PIXEL_SIZE = 20;
-        private Image imageTank, imageBricks,imageSteel;
+        private Image imageTank, imageBricks,imageSteel, imageTrees;
 
         public Renderer() {
             setDoubleBuffered(true);
@@ -53,6 +53,7 @@ public class Window extends JFrame implements Observer {
             paintTank(g);
             paintBricks(g);
             paintSteel(g);
+            paintTrees(g);
         }
 
         private void paintGrids(Graphics g) {
@@ -95,6 +96,16 @@ public class Window extends JFrame implements Observer {
                 int x = s.getX();
                 int y = s.getY();
                 g.drawImage(imageSteel, x* perCell, y * perCell, CELL_PIXEL_SIZE, CELL_PIXEL_SIZE, null,null);
+            }
+        }
+
+        private void paintTrees(Graphics g){
+            imageTrees = new ImageIcon("img/trees.jpg").getImage();
+            int perCell = size/world.getSize();
+            for(Trees t: world.getTrees()){
+                int x = t.getX();
+                int y = t.getY();
+                g.drawImage(imageTrees, x* perCell, y * perCell, CELL_PIXEL_SIZE, CELL_PIXEL_SIZE, null,null);
             }
         }
 

@@ -27,8 +27,6 @@ public class Player extends WObject {
     public void turnWest() {
         super.turnWest();
         currentState.west(this);
-    }
-
 
     @Override
     public void turnEast() {

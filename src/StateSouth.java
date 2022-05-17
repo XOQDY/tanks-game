@@ -25,7 +25,7 @@ public class StateSouth extends State{
     public boolean check(String stateCheck) {
         return Objects.equals(stateCheck, "south");
     }
-
+  
     @Override
     public int xDirection() {
         return 0;

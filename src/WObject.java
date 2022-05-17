@@ -8,6 +8,8 @@ public abstract class WObject {
 
     private int speed;
 
+    private boolean isAlive = true;
+
     public WObject() {
     }
 
@@ -54,6 +56,9 @@ public abstract class WObject {
         return y;
     }
 
+    public boolean isAlive() {
+        return isAlive;
+    }
     public void setDx(int dx) {
         this.dx = dx;
     }
@@ -69,6 +74,10 @@ public abstract class WObject {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
     }
 
     public boolean hit(WObject wObj) {

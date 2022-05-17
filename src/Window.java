@@ -14,6 +14,8 @@ public class Window extends JFrame implements Observer {
     private Renderer renderer;
     private Gui gui;
     private Image imageTank = null;
+    private boolean single = false;
+    private boolean multi = false;
 
     public Window() {
         super();
@@ -52,8 +54,11 @@ public class Window extends JFrame implements Observer {
             super.paint(g);
             paintGrids(g);
             paintPlayer1(g);
-            paintPlayer2(g);
-            paintEnemies(g);
+            if (single) {
+                paintEnemies(g);
+            } else if (multi) {
+                paintPlayer2(g);
+            }
             paintBullets(g);
         }
 
@@ -105,20 +110,19 @@ public class Window extends JFrame implements Observer {
         }
 
         private void paintEnemies(Graphics g) {
-            if (world.getPlayer2().sameState("north")) {
-                imageTank = new ImageIcon("image/tank3/tank_north.png").getImage();
-            } else if (world.getPlayer2().sameState("south")) {
-                imageTank = new ImageIcon("image/tank3/tank_south.png").getImage();
-            } else if (world.getPlayer2().sameState("west")) {
-                imageTank = new ImageIcon("image/tank3/tank_west.png").getImage();
-            } else if (world.getPlayer2().sameState("east")) {
-                imageTank = new ImageIcon("image/tank3/tank_east.png").getImage();
-            }
-
             int perCell = size/world.getSize();
             for(Enemy e : world.getEnemies()) {
                 int x = e.getX();
                 int y = e.getY();
+                if (e.sameState("north")) {
+                    imageTank = new ImageIcon("image/tank3/tank_north.png").getImage();
+                } else if (e.sameState("south")) {
+                    imageTank = new ImageIcon("image/tank3/tank_south.png").getImage();
+                } else if (e.sameState("west")) {
+                    imageTank = new ImageIcon("image/tank3/tank_west.png").getImage();
+                } else if (e.sameState("east")) {
+                    imageTank = new ImageIcon("image/tank3/tank_east.png").getImage();
+                }
                 g.drawImage(imageTank, x * perCell, y * perCell, CELL_PIXEL_SIZE, CELL_PIXEL_SIZE, null, null);
             }
         }
@@ -134,25 +138,48 @@ public class Window extends JFrame implements Observer {
 
     class Gui extends JPanel {
 
-        private JButton startButton;
+        private JButton singlePlayer;
+        private JButton multiPlayer;
         private JLabel gameOverLabel;
 
         public Gui() {
             setLayout(new FlowLayout());
-            startButton = new JButton("Start");
-            startButton.addActionListener(new ActionListener() {
+            singlePlayer = new JButton("1 Player");
+            singlePlayer.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    world.start();
-                    startButton.setEnabled(false);
+                    setSinglePlayer();
+                    world.startSingle();
+                    single = true;
+                    singlePlayer.setEnabled(false);
                     Window.this.requestFocus();
                 }
             });
-            add(startButton);
+            add(singlePlayer);
+            multiPlayer = new JButton("2 Players");
+            multiPlayer.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    setMultiPlayer();
+                    world.startMulti();
+                    multi = true;
+                    multiPlayer.setEnabled(false);
+                    Window.this.requestFocus();
+                }
+            });
+            add(multiPlayer);
             gameOverLabel = new JLabel("GAME OVER");
             gameOverLabel.setForeground(Color.red);
             gameOverLabel.setVisible(false);
             add(gameOverLabel);
+        }
+
+        public void setSinglePlayer() {
+            world.setWorldSingle();
+        }
+
+        public void setMultiPlayer() {
+            world.setWorldMulti();
         }
 
         public void showGameOverLabel() {
@@ -178,26 +205,29 @@ public class Window extends JFrame implements Observer {
                 c.execute();
             }
 
-            if (e.getKeyCode() == KeyEvent.VK_W) {
-                Command c = new CommandTurnNorth(world.getPlayer2());
-                c.execute();
-            } else if(e.getKeyCode() == KeyEvent.VK_S) {
-                Command c = new CommandTurnSouth(world.getPlayer2());
-                c.execute();
-            } else if(e.getKeyCode() == KeyEvent.VK_A) {
-                Command c = new CommandTurnWest(world.getPlayer2());
-                c.execute();
-            } else if(e.getKeyCode() == KeyEvent.VK_D) {
-                Command c = new CommandTurnEast(world.getPlayer2());
-                c.execute();
-            }
-
             if (e.getKeyCode() == KeyEvent.VK_SLASH) {
                 // shoot bullet
                 world.fire_bullet(world.getPlayer1());
             }
-            if (e.getKeyCode() == KeyEvent.VK_E) {
-                world.fire_bullet(world.getPlayer2());
+
+            if (multi) {
+                if (e.getKeyCode() == KeyEvent.VK_W) {
+                    Command c = new CommandTurnNorth(world.getPlayer2());
+                    c.execute();
+                } else if(e.getKeyCode() == KeyEvent.VK_S) {
+                    Command c = new CommandTurnSouth(world.getPlayer2());
+                    c.execute();
+                } else if(e.getKeyCode() == KeyEvent.VK_A) {
+                    Command c = new CommandTurnWest(world.getPlayer2());
+                    c.execute();
+                } else if(e.getKeyCode() == KeyEvent.VK_D) {
+                    Command c = new CommandTurnEast(world.getPlayer2());
+                    c.execute();
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_E) {
+                    world.fire_bullet(world.getPlayer2());
+                }
             }
         }
 
@@ -212,13 +242,16 @@ public class Window extends JFrame implements Observer {
                 Command c = new CommandStop(world.getPlayer1());
                 c.execute();
             }
-            if ((e.getKeyCode() == KeyEvent.VK_W && player2.sameState("north"))
-                    || (e.getKeyCode() == KeyEvent.VK_S && player2.sameState("south"))
-                    || (e.getKeyCode() == KeyEvent.VK_A && player2.sameState("west"))
-                    || (e.getKeyCode() == KeyEvent.VK_D && player2.sameState("east"))){
-                Command c = new CommandStop(world.getPlayer2());
-                c.execute();
+            if (multi) {
+                if ((e.getKeyCode() == KeyEvent.VK_W && player2.sameState("north"))
+                        || (e.getKeyCode() == KeyEvent.VK_S && player2.sameState("south"))
+                        || (e.getKeyCode() == KeyEvent.VK_A && player2.sameState("west"))
+                        || (e.getKeyCode() == KeyEvent.VK_D && player2.sameState("east"))){
+                    Command c = new CommandStop(world.getPlayer2());
+                    c.execute();
+                }
             }
+
         }
     }
 

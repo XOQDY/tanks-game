@@ -25,17 +25,43 @@ public class World extends Observable {
         bullets = new ArrayList<Bullet>();
         bulletPool = new BulletPool();
         player1 = new Player(size/2, size/2);
-        player2 = new Player(size/4, size/4);
+        tanks.add(player1);
+    }
+
+    public void setWorldSingle() {
         enemies = new Enemy[enemyCount];
         Random random = new Random();
         for(int i = 0; i < enemies.length; i++) {
             enemies[i] = new Enemy(random.nextInt(size), random.nextInt(size));
         }
-        tanks.add(player1);
+    }
+
+    public void setWorldMulti() {
+        player2 = new Player(size/4, size/4);
         tanks.add(player2);
     }
 
-    public void start() {
+    public void startSingle() {
+        player1.setPosition(size/2, size/2);
+        notOver = true;
+        thread = new Thread() {
+            @Override
+            public void run() {
+                while(notOver) {
+                    player1.move();
+                    moveBullets();
+                    cleanupBullets();
+                    checkHit();
+                    setChanged();
+                    notifyObservers();
+                    waitFor(delayed);
+                }
+            }
+        };
+        thread.start();
+    }
+
+    public void startMulti() {
         player1.setPosition(size/2, size/2);
         player2.setPosition(size/4, size/4);
         notOver = true;

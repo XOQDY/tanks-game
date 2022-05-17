@@ -1,13 +1,19 @@
 public class Enemy extends Player {
 
+    private MoveStrategy moveStrategy;
+    private Command command ;
+
     public Enemy() {
     }
 
-    public Enemy(int x, int y) {
+    public Enemy(int x, int y, MoveStrategy moveStrategy) {
         super(x, y);
+        this.moveStrategy = moveStrategy;
     }
 
-    public void moving(){
+    public Command moving(World world){
+        command = moveStrategy.getNextMoveCommand(world, this);
+        return command;
     }
 
 }

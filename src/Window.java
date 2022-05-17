@@ -26,6 +26,7 @@ public class Window extends JFrame implements Observer {
         world.addObserver(this);
         setSize(size, size);
         setAlwaysOnTop(true);
+        setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
@@ -58,7 +59,7 @@ public class Window extends JFrame implements Observer {
 
         private void paintGrids(Graphics g) {
             // Background
-            g.setColor(Color.lightGray);
+            g.setColor(Color.black);
             g.fillRect(0, 0, size, size);
 
             // Lines
@@ -71,7 +72,6 @@ public class Window extends JFrame implements Observer {
         }
 
         private void paintTank(Graphics g) {
-            imageTank = new ImageIcon("img/tank.png").getImage();
             int perCell = size/world.getSize();
             int x = world.getTank().getX();
             int y = world.getTank().getY();

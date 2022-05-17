@@ -1,20 +1,16 @@
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
-import java.util.Random;
 
 public class World extends Observable {
 
     private int size;
 
     private Tank tank;
-    private Bricks [] bricks;
-    private int bricksCount = 20;
-
-    private Steel [] steels;
-
-    private int steelsCount = 10;
-
-    private Trees [] trees;
-    private int treesCount=20;
+    private List<Bricks> bricks;
+    private List<Steel> steels;
+    private List<Trees> trees;
 
     private Thread thread;
 
@@ -23,21 +19,15 @@ public class World extends Observable {
     private long delayed = 500;
 
     public World(int size) {
+        Map  map = new Map();
         this.size = size;
         tank = new Tank(size/2, size/2);
-        bricks = new Bricks[bricksCount];
-        steels = new Steel[steelsCount];
-        trees = new Trees[treesCount];
-        Random random = new Random();
-        for (int i = 0; i < bricks.length; i++){
-            bricks[i] = new Bricks(random.nextInt(size), random.nextInt(size));
-        }
-        for (int i = 0; i < steels.length; i++){
-            steels[i] = new Steel(random.nextInt(size), random.nextInt(size));
-        }
-        for (int i = 0; i < trees.length; i++){
-            trees[i] = new Trees(random.nextInt(size), random.nextInt(size));
-        }
+        int[][] tree = map.Trees;
+        int[][] brick = map.brick;
+        int[][] steel = map.steel;
+        initBrick(brick);
+        initSteel(steel);
+        initTrees(tree);
     }
 
     public void start() {
@@ -58,6 +48,27 @@ public class World extends Observable {
         thread.start();
     }
 
+    private void initBrick(int [][] Bricks){
+        bricks = new ArrayList<Bricks>();
+        for (int[] ints : Bricks) {
+            bricks.add(new Bricks(ints[1], ints[0]));
+        }
+    }
+
+    private void initTrees(int [][] Trees){
+        trees = new ArrayList<Trees>();
+        for (int[] ints : Trees){
+            trees.add(new Trees(ints[1], ints[0]));
+        }
+    }
+
+    private void initSteel(int [][] Steel){
+        steels = new ArrayList<Steel>();
+        for (int[] ints: Steel){
+            steels.add(new Steel(ints[1],ints[0]));
+        }
+    }
+
 
     private void waitFor(long delayed) {
         try {
@@ -75,15 +86,15 @@ public class World extends Observable {
         return tank;
     }
 
-    public Bricks[] getBricks(){
+    public List<Bricks> getBricks(){
         return bricks;
     }
 
-    public Steel[] getSteels(){
+    public List<Steel> getSteels(){
         return steels;
     }
 
-    public Trees[] getTrees(){
+    public List<Trees> getTrees(){
         return trees;
     }
 

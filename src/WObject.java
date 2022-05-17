@@ -36,6 +36,11 @@ public abstract class WObject {
         dy = 0;
     }
 
+    public void stop() {
+        dx = 0;
+        dy = 0;
+    }
+
     public void move() {
         this.x += dx * speed;
         this.y += dy * speed;

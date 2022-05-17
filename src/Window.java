@@ -132,6 +132,17 @@ public class Window extends JFrame implements Observer {
                 world.fire_bullet();
             }
         }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_UP
+                    || e.getKeyCode() == KeyEvent.VK_DOWN
+                    || e.getKeyCode() == KeyEvent.VK_LEFT
+                    || e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                Command c = new CommandStop(world.getPlayer());
+                c.execute();
+            }
+        }
     }
 
     public static void main(String[] args) {

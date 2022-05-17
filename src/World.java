@@ -11,7 +11,7 @@ public class World extends Observable {
     private Player player1, player2;
     private Thread thread;
     private boolean notOver;
-    private long delayed = 30;
+    private long delayed = 300;
     private int enemyCount = 3;
 
     private Enemy [] enemies;
@@ -50,6 +50,7 @@ public class World extends Observable {
             public void run() {
                 while(notOver) {
                     player1.move();
+                    checkCollisions(player1);
                     moveBullets();
                     cleanupBullets();
                     checkHit();
@@ -72,7 +73,9 @@ public class World extends Observable {
             public void run() {
                 while(notOver) {
                     player1.move();
+                    checkCollisions(player1);
                     player2.move();
+                    checkCollisions(player2);
                     moveBullets();
                     cleanupBullets();
                     checkHit();
@@ -91,6 +94,14 @@ public class World extends Observable {
             Thread.sleep(delayed);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void checkCollisions(Player player) {
+        for (Player tank : tanks) {
+            if (player != tank && player.hit(tank)) {
+                player.moveBack();
+            }
         }
     }
 

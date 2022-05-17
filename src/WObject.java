@@ -49,6 +49,11 @@ public abstract class WObject {
         this.y += dy * speed;
     }
 
+    public void moveBack() {
+        this.x -= dx * speed;
+        this.y -= dy * speed;
+    }
+
     public int getX() {
         return x;
     }

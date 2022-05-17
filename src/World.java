@@ -143,7 +143,7 @@ public class World extends Observable {
                 player.moveBack();
             }
         }
-        if (blocks[player.getX()][player.getY()] != null && !(blocks[player.getX()][player.getY()] instanceof Tree)) {
+        if (blocks[player.getX()][player.getY()] != null && !(blocks[player.getX()][player.getY()].isPenetrable())) {
             player.moveBack();
         }
     }
@@ -216,8 +216,8 @@ public class World extends Observable {
                     bullet.getY() >= size) {
                 toRemove.add(bullet);
             }
-            if (blocks[bullet.getX()][bullet.getY()] != null && !(blocks[bullet.getX()][bullet.getY()] instanceof Tree)) {
-                if (blocks[bullet.getX()][bullet.getY()] instanceof Brick) {
+            if (blocks[bullet.getX()][bullet.getY()] != null && !(blocks[bullet.getX()][bullet.getY()].isPenetrable())) {
+                if (blocks[bullet.getX()][bullet.getY()].isDestructible()) {
                     blocks[bullet.getX()][bullet.getY()] = null;
                 }
                 toRemove.add(bullet);

@@ -52,6 +52,7 @@ public class Window extends JFrame implements Observer {
             paintGrids(g);
             paintTank(g);
             paintBricks(g);
+            paintSteel(g);
         }
 
         private void paintGrids(Graphics g) {
@@ -87,6 +88,15 @@ public class Window extends JFrame implements Observer {
 
         }
 
+        private void paintSteel(Graphics g ){
+            imageSteel = new ImageIcon("img/steel.jpg").getImage();
+            int perCell = size/world.getSize();
+            for(Steel s: world.getSteels()){
+                int x = s.getX();
+                int y = s.getY();
+                g.drawImage(imageSteel, x* perCell, y * perCell, CELL_PIXEL_SIZE, CELL_PIXEL_SIZE, null,null);
+            }
+        }
 
     }
 

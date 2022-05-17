@@ -70,4 +70,8 @@ public abstract class WObject {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
+
+    public boolean hit(WObject wObj) {
+        return x == wObj.x && y == wObj.y;
+    }
 }

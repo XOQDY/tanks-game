@@ -1,6 +1,7 @@
 public class Player extends WObject {
 
     private State currentState;
+    private boolean isAlive = true;
 
     public Player() {
     }
@@ -53,5 +54,13 @@ public class Player extends WObject {
 
     public int yDirection() {
         return currentState.yDirection();
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
     }
 }

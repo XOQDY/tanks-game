@@ -12,14 +12,18 @@ public class World extends Observable {
     private boolean notOver;
     private long delayed = 30;
 
+    private List<Player> tanks;
     private List<Bullet> bullets;
 
     public World(int size) {
         this.size = size;
+        tanks = new ArrayList<Player>();
         bullets = new ArrayList<Bullet>();
         bulletPool = new BulletPool();
         player1 = new Player(size/2, size/2);
         player2 = new Player(size/4, size/4);
+        tanks.add(player1);
+        tanks.add(player2);
     }
 
     public void start() {
@@ -34,6 +38,7 @@ public class World extends Observable {
                     player2.move();
                     moveBullets();
                     cleanupBullets();
+                    checkHit();
                     setChanged();
                     notifyObservers();
                     waitFor(delayed);
@@ -48,6 +53,24 @@ public class World extends Observable {
             Thread.sleep(delayed);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void checkHit() {
+        List<Bullet> toRemove = new ArrayList<Bullet>();
+        for(Bullet bullet : bullets) {
+            for (Player p : tanks) {
+                if(bullet.hit(p)) {
+                    toRemove.add(bullet);
+                    p.setAlive(false);
+                    notOver = false;
+                }
+            }
+
+        }
+        for(Bullet bullet : toRemove) {
+            bullets.remove(bullet);
+            bulletPool.releaseBullet(bullet);
         }
     }
 

@@ -158,10 +158,22 @@ public class Window extends JFrame implements Observer {
         }
 
         private void paintBullets(Graphics g) {
+            Image imageBullet = null;
             int perCell = size/world.getSize();
             g.setColor(Color.gray);
             for(Bullet bullet : world.getBullets()) {
-                g.fillOval((bullet.getX() * perCell) + (perCell / 4), (bullet.getY() * perCell) + (perCell / 4), 10, 10);
+                int x = bullet.getX();
+                int y = bullet.getY();
+                if (bullet.getOwner().sameState("north")) {
+                    imageBullet = new ImageIcon("image/bullet/bullet_north.png").getImage();
+                } else if (bullet.getOwner().sameState("south")) {
+                    imageBullet = new ImageIcon("image/bullet/bullet_south.png").getImage();
+                } else if (bullet.getOwner().sameState("west")) {
+                    imageBullet = new ImageIcon("image/bullet/bullet_west.png").getImage();
+                } else if (bullet.getOwner().sameState("east")) {
+                    imageBullet = new ImageIcon("image/bullet/bullet_east.png").getImage();
+                }
+                g.drawImage(imageBullet, (x * perCell) + (perCell / 3), (y * perCell) + (perCell / 3), CELL_PIXEL_SIZE/3, CELL_PIXEL_SIZE/3, null, null);
             }
         }
     }

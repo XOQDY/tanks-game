@@ -7,7 +7,7 @@ public class Bullet extends WObject{
 
     public Bullet(int x, int y) {
         super(x, y);
-        setSpeed(2);
+        setSpeed(1);
     }
 
     public void refreshState(int x, int y, int dx, int dy, Player owner) {

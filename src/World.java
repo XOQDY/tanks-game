@@ -87,6 +87,6 @@ public class World extends Observable {
     }
 
     public void fire_bullet() {
-        bullets.add(bulletPool.requestBullet(player.getX(), player.getY(), player.getDx(), player.getDy()));
+        bullets.add(bulletPool.requestBullet(player.getX(), player.getY(), player.xDirection(), player.yDirection()));
     }
 }

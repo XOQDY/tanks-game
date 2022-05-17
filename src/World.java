@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Random;
 
 public class World extends Observable {
 
@@ -11,6 +12,9 @@ public class World extends Observable {
     private Thread thread;
     private boolean notOver;
     private long delayed = 30;
+    private int enemyCount = 3;
+
+    private Enemy [] enemies;
 
     private List<Player> tanks;
     private List<Bullet> bullets;
@@ -22,6 +26,11 @@ public class World extends Observable {
         bulletPool = new BulletPool();
         player1 = new Player(size/2, size/2);
         player2 = new Player(size/4, size/4);
+        enemies = new Enemy[enemyCount];
+        Random random = new Random();
+        for(int i = 0; i < enemies.length; i++) {
+            enemies[i] = new Enemy(random.nextInt(size), random.nextInt(size));
+        }
         tanks.add(player1);
         tanks.add(player2);
     }
@@ -84,6 +93,10 @@ public class World extends Observable {
 
     public Player getPlayer2() {
         return player2;
+    }
+
+    public Enemy[] getEnemies() {
+        return enemies;
     }
 
     private void moveBullets() {

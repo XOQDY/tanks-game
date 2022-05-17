@@ -54,14 +54,6 @@ public abstract class WObject {
         return y;
     }
 
-    public int getDx() {
-        return dx;
-    }
-
-    public int getDy() {
-        return dy;
-    }
-
     public void setDx(int dx) {
         this.dx = dx;
     }

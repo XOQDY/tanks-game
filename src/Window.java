@@ -40,6 +40,8 @@ public class Window extends JFrame implements Observer {
 
     class Renderer extends JPanel {
 
+        public static final int CELL_PIXEL_SIZE = 20;
+
         public Renderer() {
             setDoubleBuffered(true);
         }
@@ -68,19 +70,40 @@ public class Window extends JFrame implements Observer {
         }
 
         private void paintPlayer1(Graphics g) {
+            Image imageTank = null;
+
+            if (world.getPlayer1().sameState("north")) {
+                imageTank = new ImageIcon("image/tank1/tank_north.png").getImage();
+            } else if (world.getPlayer1().sameState("south")) {
+                imageTank = new ImageIcon("image/tank1/tank_south.png").getImage();
+            } else if (world.getPlayer1().sameState("west")) {
+                imageTank = new ImageIcon("image/tank1/tank_west.png").getImage();
+            } else if (world.getPlayer1().sameState("east")) {
+                imageTank = new ImageIcon("image/tank1/tank_east.png").getImage();
+            }
+
             int perCell = size/world.getSize();
             int x = world.getPlayer1().getX();
             int y = world.getPlayer1().getY();
-            g.setColor(Color.green);
-            g.fillRect(x * perCell,y * perCell,perCell, perCell);
+            g.drawImage(imageTank, x * perCell, y * perCell, CELL_PIXEL_SIZE, CELL_PIXEL_SIZE, null, null);
         }
 
         private void paintPlayer2(Graphics g) {
+            Image imageTank = null;
+
+            if (world.getPlayer2().sameState("north")) {
+                imageTank = new ImageIcon("image/tank2/tank_north.png").getImage();
+            } else if (world.getPlayer2().sameState("south")) {
+                imageTank = new ImageIcon("image/tank2/tank_south.png").getImage();
+            } else if (world.getPlayer2().sameState("west")) {
+                imageTank = new ImageIcon("image/tank2/tank_west.png").getImage();
+            } else if (world.getPlayer2().sameState("east")) {
+                imageTank = new ImageIcon("image/tank2/tank_east.png").getImage();
+            }
             int perCell = size/world.getSize();
             int x = world.getPlayer2().getX();
             int y = world.getPlayer2().getY();
-            g.setColor(Color.red);
-            g.fillRect(x * perCell,y * perCell,perCell, perCell);
+            g.drawImage(imageTank, x * perCell, y * perCell, CELL_PIXEL_SIZE, CELL_PIXEL_SIZE, null, null);
         }
 
         private void paintBullets(Graphics g) {

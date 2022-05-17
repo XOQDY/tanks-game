@@ -28,6 +28,7 @@ public class World extends Observable {
         bullets = new ArrayList<Bullet>();
         bulletPool = new BulletPool();
         player1 = new Player(-999, -999);
+        player2 = new Player(-999,-999);
         tanks.add(player1);
     }
 

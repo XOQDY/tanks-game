@@ -1,33 +1,27 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
-import java.util.Random;
 
 public class World extends Observable {
 
     private int size;
 
+    private BulletPool bulletPool;
     private Player player;
     private Thread thread;
     private boolean notOver;
-    private long delayed = 500;
-    private int enemyCount = 20;
+    private long delayed = 30;
 
-    private Enemy [] enemies;
+    private List<Bullet> bullets;
 
     public World(int size) {
         this.size = size;
+        bullets = new ArrayList<Bullet>();
+        bulletPool = new BulletPool();
         player = new Player(size/2, size/2);
-        enemies = new Enemy[enemyCount];
-        Random random = new Random();
-        for(int i = 0; i < enemies.length / 2; i++) {
-            enemies[i] = new Enemy(random.nextInt(size), random.nextInt(size));
-        }
-        for(int i = enemies.length / 2; i < enemies.length; i++) {
-            enemies[i] = new EnemyMoving(random.nextInt(size), size);
-        }
     }
 
     public void start() {
-        player.reset();
         player.setPosition(size/2, size/2);
         notOver = true;
         thread = new Thread() {
@@ -35,25 +29,15 @@ public class World extends Observable {
             public void run() {
                 while(notOver) {
                     player.move();
-                    checkCollisions();
+                    moveBullets();
+                    cleanupBullets();
                     setChanged();
                     notifyObservers();
                     waitFor(delayed);
-                    for (Enemy e: enemies) {
-                        e.moving();
-                    }
                 }
             }
         };
         thread.start();
-    }
-
-    private void checkCollisions() {
-        for(Enemy e : enemies) {
-            if(e.hit(player)) {
-                notOver = false;
-            }
-        }
     }
 
     private void waitFor(long delayed) {
@@ -72,11 +56,37 @@ public class World extends Observable {
         return player;
     }
 
-    public Enemy[] getEnemies() {
-        return enemies;
+    private void moveBullets() {
+        for(Bullet bullet : bullets) {
+            bullet.move();
+        }
     }
 
     public boolean isGameOver() {
         return !notOver;
+    }
+
+    private void cleanupBullets() {
+        List<Bullet> toRemove = new ArrayList<Bullet>();
+        for(Bullet bullet : bullets) {
+            if(bullet.getX() <= 0 ||
+                    bullet.getX() >= size ||
+                    bullet.getY() <= 0 ||
+                    bullet.getY() >= size) {
+                toRemove.add(bullet);
+            }
+        }
+        for(Bullet bullet : toRemove) {
+            bullets.remove(bullet);
+            bulletPool.releaseBullet(bullet);
+        }
+    }
+
+    public List<Bullet> getBullets() {
+        return bullets;
+    }
+
+    public void fire_bullet() {
+        bullets.add(bulletPool.requestBullet(player.getX(), player.getY(), player.getDx(), player.getDy()));
     }
 }

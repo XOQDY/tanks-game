@@ -6,6 +6,8 @@ public abstract class WObject {
     private int dx;
     private int dy;
 
+    private int speed;
+
     public WObject() {
     }
 
@@ -34,9 +36,14 @@ public abstract class WObject {
         dy = 0;
     }
 
+    public void stop() {
+        dx = 0;
+        dy = 0;
+    }
+
     public void move() {
-        this.x += dx;
-        this.y += dy;
+        this.x += dx * speed;
+        this.y += dy * speed;
     }
 
     public int getX() {
@@ -47,8 +54,20 @@ public abstract class WObject {
         return y;
     }
 
-    public void reset() {
-        dx = dy = 0;
+    public int getDx() {
+        return dx;
+    }
+
+    public int getDy() {
+        return dy;
+    }
+
+    public void setDx(int dx) {
+        this.dx = dx;
+    }
+
+    public void setDy(int dy) {
+        this.dy = dy;
     }
 
     public void setPosition(int x, int y) {
@@ -56,7 +75,7 @@ public abstract class WObject {
         this.y = y;
     }
 
-    public boolean hit(WObject wObj) {
-        return x == wObj.x && y == wObj.y;
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

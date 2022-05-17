@@ -113,29 +113,21 @@ public class Window extends JFrame implements Observer {
     }
 
     class Controller extends KeyAdapter {
-        boolean north = false;
-        boolean south = false;
-        boolean west = false;
-        boolean east = false;
 
         @Override
         public void keyPressed(KeyEvent e) {
             if(e.getKeyCode() == KeyEvent.VK_UP) {
                 Command c = new CommandTurnNorth(world.getPlayer());
                 c.execute();
-                north = true;
             } else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
                 Command c = new CommandTurnSouth(world.getPlayer());
                 c.execute();
-                south = true;
             } else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
                 Command c = new CommandTurnWest(world.getPlayer());
                 c.execute();
-                west = true;
             } else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 Command c = new CommandTurnEast(world.getPlayer());
                 c.execute();
-                east = true;
             } else if (e.getKeyCode() == KeyEvent.VK_Z) {
                 // shoot bullet
                 world.fire_bullet();
@@ -144,21 +136,13 @@ public class Window extends JFrame implements Observer {
 
         @Override
         public void keyReleased(KeyEvent e) {
-            if (e.isActionKey()) {
-                if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    north = false;
-                } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    south = false;
-                } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    west = false;
-                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    east = false;
-                }
-
-                if (!north && !south && !west && !east) {
-                    Command c = new CommandStop(world.getPlayer());
-                    c.execute();
-                }
+            Player player = world.getPlayer();
+            if ((e.getKeyCode() == KeyEvent.VK_UP && player.sameState("north"))
+                    || (e.getKeyCode() == KeyEvent.VK_DOWN && player.sameState("south"))
+                    || (e.getKeyCode() == KeyEvent.VK_LEFT && player.sameState("west"))
+                    || (e.getKeyCode() == KeyEvent.VK_RIGHT && player.sameState("east"))){
+                Command c = new CommandStop(world.getPlayer());
+                c.execute();
             }
         }
     }

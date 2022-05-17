@@ -73,7 +73,7 @@ public class Window extends JFrame implements Observer {
             int x = world.getPlayer().getX();
             int y = world.getPlayer().getY();
             g.setColor(Color.green);
-            g.fillRect((x * perCell) / 6,(y * perCell) / 6,perCell, perCell);
+            g.fillRect(x * perCell,y * perCell,perCell, perCell);
         }
 
         private void paintBullets(Graphics g) {

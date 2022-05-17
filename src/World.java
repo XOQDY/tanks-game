@@ -10,7 +10,7 @@ public class World extends Observable {
     private Player player;
     private Thread thread;
     private boolean notOver;
-    private long delayed = 500;
+    private long delayed = 30;
 
     private List<Bullet> bullets;
 

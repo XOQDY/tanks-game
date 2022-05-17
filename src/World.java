@@ -6,6 +6,8 @@ public class World extends Observable {
     private int size;
 
     private Tank tank;
+    private Bricks [] bricks;
+    private int bricksCount = 10;
     private Thread thread;
     private boolean notOver;
     private long delayed = 500;
@@ -13,7 +15,11 @@ public class World extends Observable {
     public World(int size) {
         this.size = size;
         tank = new Tank(size/2, size/2);
+        bricks = new Bricks[bricksCount];
         Random random = new Random();
+        for (int i = 0; i < bricks.length; i++){
+            bricks[i] = new Bricks(random.nextInt(size), random.nextInt(size));
+        }
     }
 
     public void start() {
@@ -49,6 +55,10 @@ public class World extends Observable {
 
     public Tank getTank() {
         return tank;
+    }
+
+    public Bricks[] getBricks(){
+        return bricks;
     }
 
     public boolean isGameOver() {

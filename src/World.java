@@ -121,11 +121,20 @@ public class World extends Observable {
         int[] position = new int[2];
         position[0] = random.nextInt(size);
         position[1] = random.nextInt(size);
-        while (blocks[position[0]][position[1]] != null) {
+        while (!checkCanDeploy(position[0], position[1])) {
             position[0] = random.nextInt(size);
             position[1] = random.nextInt(size);
         }
         return position;
+    }
+
+    private boolean checkCanDeploy(int x, int y) {
+        for (Player tank : tanks) {
+            if (tank.getX() == x && tank.getY() == y) {
+                return false;
+            }
+        }
+        return blocks[x][y] == null;
     }
 
     private void checkCollisions(Player player) {

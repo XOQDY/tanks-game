@@ -39,8 +39,9 @@ public class Window extends JFrame implements Observer {
 
         if(world.isGameOver()) {
             gui.showGameOverLabel();
-            int gameOver = JOptionPane.showConfirmDialog(Window.this,"Do you want to replay?","GameOver",JOptionPane.YES_NO_OPTION);
-            if (gameOver == JOptionPane.YES_OPTION){
+            int replay = JOptionPane.showConfirmDialog(this,
+                    "Do you want to replay?","GameOver", JOptionPane.YES_NO_OPTION);
+            if (replay == JOptionPane.YES_OPTION){
                 gui.gameOverLabel.setVisible(false);
                 world = new World(25);
                 world.addObserver(this);
@@ -48,7 +49,7 @@ public class Window extends JFrame implements Observer {
                 gui.singlePlayer.setEnabled(true);
                 gui.multiPlayer.setEnabled(true);
                 renderer.repaint();
-            } else {dispose();}
+            } else {System.exit(1);}
 
         }
 

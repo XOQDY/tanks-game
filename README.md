@@ -37,7 +37,7 @@ In multiplayer you are fighting with your friend (on the same computer) the poin
 ### model.Block Type
 **Bricks** : model.Block all tanks movements but can be destroyed if get shot.  
 
-**model.Steel** : model.Block all tanks movements and cannot be destroyed.  
+**Steel** : model.Block all tanks movements and cannot be destroyed.  
 
 **Trees** : Do not block tanks nor bullets. But all objects that move pass trees will be hidden
 under them and are hard to see.

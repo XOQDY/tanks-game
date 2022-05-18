@@ -53,7 +53,6 @@ public class Window extends JFrame implements Observer {
         public void paint(Graphics g) {
             super.paint(g);
             paintGrids(g);
-            paintBlock(g);
             if (world.getPlayer1().isAlive()) {
                 paintPlayer1(g);
             }
@@ -62,6 +61,7 @@ public class Window extends JFrame implements Observer {
             } else if (multi && world.getPlayer2().isAlive()) {
                 paintPlayer2(g);
             }
+            paintBlock(g);
             paintBullets(g);
         }
 
@@ -82,7 +82,7 @@ public class Window extends JFrame implements Observer {
         private void paintBlock(Graphics g) {
             Image brick = new ImageIcon("image/block/brick.jpg").getImage();
             Image steel = new ImageIcon("image/block/steel.jpg").getImage();
-            Image tree = new ImageIcon("image/block/tree.jpg").getImage();
+            Image tree = new ImageIcon("image/block/tree.png").getImage();
 
             int perCell = size/world.getSize();
             int x;

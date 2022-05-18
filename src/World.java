@@ -11,7 +11,7 @@ public class World extends Observable {
     private Player player1, player2;
     private Thread thread;
     private boolean notOver;
-    private long delayed = 300;
+    private long delayed = 250;
     private int enemyCount = 3;
 
     private Enemy [] enemies;

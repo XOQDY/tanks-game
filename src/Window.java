@@ -43,12 +43,13 @@ public class Window extends JFrame implements Observer {
                     "Do you want to replay?","GameOver", JOptionPane.YES_NO_OPTION);
             if (replay == JOptionPane.YES_OPTION){
                 gui.gameOverLabel.setVisible(false);
+                single = false;
                 world = new World(25);
                 world.addObserver(this);
                 addKeyListener(new Controller());
                 gui.singlePlayer.setEnabled(true);
                 gui.multiPlayer.setEnabled(true);
-                renderer.repaint();
+                repaint();
             } else {System.exit(1);}
 
         }
@@ -211,6 +212,7 @@ public class Window extends JFrame implements Observer {
             multiPlayer.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    single = false;
                     setMultiPlayer();
                     world.startMulti();
                     multi = true;

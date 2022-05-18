@@ -5,7 +5,7 @@ player mode, you are fighting with your friend (on the same computer, not over t
 
 ## How to Play
 ### Rule
-The Rule is simple if you got shoot you die. Simple right?
+The Rule is simple if you got shoot you die. Simple right? Also don't forgot get only one shot and you will lose. 
 
 ### Single Player Mode
 In single player mode you are fighting against AI tanks so the point of single player mode is destroy all AI tank and you will win  

@@ -1,3 +1,6 @@
+import command.*;
+import model.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -74,8 +77,8 @@ public class Window extends JFrame implements Observer {
             } else if (multi) {
                 paintPlayer2(g);
             }
-            paintBlock(g);
             paintBullets(g);
+            paintBlock(g);
         }
 
         private void paintGrids(Graphics g) {
@@ -85,9 +88,9 @@ public class Window extends JFrame implements Observer {
         }
 
         private void paintBlock(Graphics g) {
-            Image brick = new ImageIcon("image/block/brick.jpg").getImage();
-            Image steel = new ImageIcon("image/block/steel.jpg").getImage();
-            Image tree = new ImageIcon("image/block/tree.png").getImage();
+            Image brick = new ImageIcon(getClass().getResource("image/block/brick.jpg")).getImage();
+            Image steel = new ImageIcon(getClass().getResource("image/block/steel.jpg")).getImage();
+            Image tree = new ImageIcon(getClass().getResource("image/block/tree.png")).getImage();
 
             int perCell = size/world.getSize();
             int x;
@@ -112,15 +115,15 @@ public class Window extends JFrame implements Observer {
 
         private void paintPlayer1(Graphics g) {
             if (!(world.getPlayer1().isAlive())) {
-                imageTank = new ImageIcon("image/grave.png").getImage();
+                imageTank = new ImageIcon(getClass().getResource("image/grave.png")).getImage();
             } else if (world.getPlayer1().sameState("north")) {
-                imageTank = new ImageIcon("image/tank1/tank_north.png").getImage();
+                imageTank = new ImageIcon(getClass().getResource("image/tank1/tank_north.png")).getImage();
             } else if (world.getPlayer1().sameState("south")) {
-                imageTank = new ImageIcon("image/tank1/tank_south.png").getImage();
+                imageTank = new ImageIcon(getClass().getResource("image/tank1/tank_south.png")).getImage();
             } else if (world.getPlayer1().sameState("west")) {
-                imageTank = new ImageIcon("image/tank1/tank_west.png").getImage();
+                imageTank = new ImageIcon(getClass().getResource("image/tank1/tank_west.png")).getImage();
             } else if (world.getPlayer1().sameState("east")) {
-                imageTank = new ImageIcon("image/tank1/tank_east.png").getImage();
+                imageTank = new ImageIcon(getClass().getResource("image/tank1/tank_east.png")).getImage();
             }
 
             int perCell = size/world.getSize();
@@ -131,15 +134,15 @@ public class Window extends JFrame implements Observer {
 
         private void paintPlayer2(Graphics g) {
             if (!(world.getPlayer2().isAlive())) {
-                imageTank = new ImageIcon("image/grave.png").getImage();
+                imageTank = new ImageIcon(getClass().getResource("image/grave.png")).getImage();
             } else if (world.getPlayer2().sameState("north")) {
-                imageTank = new ImageIcon("image/tank2/tank_north.png").getImage();
+                imageTank = new ImageIcon(getClass().getResource("image/tank2/tank_north.png")).getImage();
             } else if (world.getPlayer2().sameState("south")) {
-                imageTank = new ImageIcon("image/tank2/tank_south.png").getImage();
+                imageTank = new ImageIcon(getClass().getResource("image/tank2/tank_south.png")).getImage();
             } else if (world.getPlayer2().sameState("west")) {
-                imageTank = new ImageIcon("image/tank2/tank_west.png").getImage();
+                imageTank = new ImageIcon(getClass().getResource("image/tank2/tank_west.png")).getImage();
             } else if (world.getPlayer2().sameState("east")) {
-                imageTank = new ImageIcon("image/tank2/tank_east.png").getImage();
+                imageTank = new ImageIcon(getClass().getResource("image/tank2/tank_east.png")).getImage();
             }
 
             int perCell = size/world.getSize();
@@ -152,15 +155,15 @@ public class Window extends JFrame implements Observer {
             int perCell = size/world.getSize();
             for(Enemy e : world.getEnemies()) {
                 if (!e.isAlive()) {
-                    imageTank = new ImageIcon("image/grave.png").getImage();
+                    imageTank = new ImageIcon(getClass().getResource("image/grave.png")).getImage();
                 } else if (e.sameState("north")) {
-                    imageTank = new ImageIcon("image/tank3/tank_north.png").getImage();
+                    imageTank = new ImageIcon(getClass().getResource("image/tank3/tank_north.png")).getImage();
                 } else if (e.sameState("south")) {
-                    imageTank = new ImageIcon("image/tank3/tank_south.png").getImage();
+                    imageTank = new ImageIcon(getClass().getResource("image/tank3/tank_south.png")).getImage();
                 } else if (e.sameState("west")) {
-                    imageTank = new ImageIcon("image/tank3/tank_west.png").getImage();
+                    imageTank = new ImageIcon(getClass().getResource("image/tank3/tank_west.png")).getImage();
                 } else if (e.sameState("east")) {
-                    imageTank = new ImageIcon("image/tank3/tank_east.png").getImage();
+                    imageTank = new ImageIcon(getClass().getResource("image/tank3/tank_east.png")).getImage();
                 }
 
                 int x = e.getX();
@@ -177,13 +180,13 @@ public class Window extends JFrame implements Observer {
                 int x = bullet.getX();
                 int y = bullet.getY();
                 if (bullet.sameState("north")) {
-                    imageBullet = new ImageIcon("image/bullet/bullet_north.png").getImage();
+                    imageBullet = new ImageIcon(getClass().getResource("image/bullet/bullet_north.png")).getImage();
                 } else if (bullet.sameState("south")) {
-                    imageBullet = new ImageIcon("image/bullet/bullet_south.png").getImage();
+                    imageBullet = new ImageIcon(getClass().getResource("image/bullet/bullet_south.png")).getImage();
                 } else if (bullet.sameState("west")) {
-                    imageBullet = new ImageIcon("image/bullet/bullet_west.png").getImage();
+                    imageBullet = new ImageIcon(getClass().getResource("image/bullet/bullet_west.png")).getImage();
                 } else if (bullet.sameState("east")) {
-                    imageBullet = new ImageIcon("image/bullet/bullet_east.png").getImage();
+                    imageBullet = new ImageIcon(getClass().getResource("image/bullet/bullet_east.png")).getImage();
                 }
                 g.drawImage(imageBullet, (x * perCell) + (perCell / 3), (y * perCell) + (perCell / 3), CELL_PIXEL_SIZE/3, CELL_PIXEL_SIZE/3, null, null);
             }

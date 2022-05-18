@@ -7,7 +7,7 @@ player mode, you are fighting with your friend (on the same computer, not over t
 ### Rule
 The Rule is simple if you got shoot you die. Simple right? Also don't forgot get only one shot and you will lose. 
 
-### Single Player Mode
+### Single model.Player Mode
 In single player mode you are fighting against AI tanks so the point of single player mode is destroy all AI tank and you will win  
 
 **Controller**:   
@@ -34,16 +34,16 @@ In multiplayer you are fighting with your friend (on the same computer) the poin
 ```d``` ```hold``` move down   
 ```e``` shoot
 
-### Block Type
-**Bricks** : Block all tanks movements but can be destroyed if get shot.  
+### model.Block Type
+**Bricks** : model.Block all tanks movements but can be destroyed if get shot.  
 
-**Steel** : Block all tanks movements and cannot be destroyed.  
+**model.Steel** : model.Block all tanks movements and cannot be destroyed.  
 
 **Trees** : Do not block tanks nor bullets. But all objects that move pass trees will be hidden
 under them and are hard to see.
 
 ## Features
-* 2 Game mode (Single Player and MultiPlayer)
+* 2 Game mode (Single model.Player and MultiPlayer)
 * Replay Button
 * At the location where the tank was destroyed, there will be a grave.
 * Select Amount of AI Enemies

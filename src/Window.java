@@ -19,6 +19,7 @@ public class Window extends JFrame implements Observer {
     private Image imageTank = null;
     private boolean single = false;
     private boolean multi = false;
+    private Sound deadSound;
 
     public Window() {
         super();
@@ -34,6 +35,7 @@ public class Window extends JFrame implements Observer {
         setSize(size+15, size+72);
         setAlwaysOnTop(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        deadSound = new Sound("src/sound/dead-sound.wav");
     }
 
     @Override
@@ -41,6 +43,7 @@ public class Window extends JFrame implements Observer {
         renderer.repaint();
 
         if(world.isGameOver()) {
+            deadSound.playSound();
             gui.showGameOverLabel();
             int replay = JOptionPane.showConfirmDialog(this,
                     "Do you want to replay?","GameOver", JOptionPane.YES_NO_OPTION);

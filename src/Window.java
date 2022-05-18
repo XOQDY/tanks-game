@@ -43,7 +43,9 @@ public class Window extends JFrame implements Observer {
         renderer.repaint();
 
         if(world.isGameOver()) {
-            deadSound.playSound();
+            if (!world.getPlayer1().isAlive() || !world.getPlayer2().isAlive()) {
+                deadSound.playSound();
+            }
             gui.showGameOverLabel();
             int replay = JOptionPane.showConfirmDialog(this,
                     "Do you want to replay?","GameOver", JOptionPane.YES_NO_OPTION);

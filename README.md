@@ -46,3 +46,4 @@ under them and are hard to see.
 * 2 Game mode (Single Player and MultiPlayer)
 * Replay Button
 * At the location where the tank was destroyed, there will be a grave.
+* Select Amount of AI Enemies

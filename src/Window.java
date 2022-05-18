@@ -19,6 +19,7 @@ public class Window extends JFrame implements Observer {
 
     public Window() {
         super();
+        setTitle("Tank Game");
         addKeyListener(new Controller());
         setLayout(new BorderLayout());
         renderer = new Renderer();
@@ -27,7 +28,7 @@ public class Window extends JFrame implements Observer {
         add(gui, BorderLayout.SOUTH);
         world = new World(25);
         world.addObserver(this);
-        setSize(size+15, size+65);
+        setSize(size+15, size+72);
         setAlwaysOnTop(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
@@ -38,7 +39,21 @@ public class Window extends JFrame implements Observer {
 
         if(world.isGameOver()) {
             gui.showGameOverLabel();
+            int replay = JOptionPane.showConfirmDialog(this,
+                    "Do you want to replay?","GameOver", JOptionPane.YES_NO_OPTION);
+            if (replay == JOptionPane.YES_OPTION){
+                gui.gameOverLabel.setVisible(false);
+                single = false;
+                world = new World(25);
+                world.addObserver(this);
+                addKeyListener(new Controller());
+                gui.singlePlayer.setEnabled(true);
+                gui.multiPlayer.setEnabled(true);
+                repaint();
+            } else {System.exit(1);}
+
         }
+
     }
 
     class Renderer extends JPanel {
@@ -197,6 +212,7 @@ public class Window extends JFrame implements Observer {
             multiPlayer.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    single = false;
                     setMultiPlayer();
                     world.startMulti();
                     multi = true;

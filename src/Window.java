@@ -202,12 +202,15 @@ public class Window extends JFrame implements Observer {
             singlePlayer.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    setSinglePlayer();
-                    world.startSingle();
-                    single = true;
-                    singlePlayer.setEnabled(false);
-                    multiPlayer.setEnabled(false);
-                    Window.this.requestFocus();
+                    int num = Integer.parseInt(JOptionPane.showInputDialog(Window.this, "Number of Enemy", "Number of Enemy", JOptionPane.QUESTION_MESSAGE));
+                    if(num > 0){
+                        setSinglePlayer(num);
+                        world.startSingle();
+                        single = true;
+                        singlePlayer.setEnabled(false);
+                        multiPlayer.setEnabled(false);
+                        Window.this.requestFocus();
+                    }
                 }
             });
             add(singlePlayer);
@@ -231,8 +234,8 @@ public class Window extends JFrame implements Observer {
             add(gameOverLabel);
         }
 
-        public void setSinglePlayer() {
-            world.setWorldSingle();
+        public void setSinglePlayer(int num) {
+            world.setWorldSingle(num);
         }
 
         public void setMultiPlayer() {

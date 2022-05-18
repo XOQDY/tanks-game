@@ -12,7 +12,6 @@ public class World extends Observable {
     private Thread thread;
     private boolean notOver;
     private long delayed = 250;
-    private int enemyCount = 3;
 
     private Enemy [] enemies;
     private Block [][] blocks;
@@ -45,7 +44,7 @@ public class World extends Observable {
         }
     }
 
-    public void setWorldSingle() {
+    public void setWorldSingle(int enemyCount) {
         enemies = new Enemy[enemyCount];
         for(int i = 0; i < enemies.length; i++) {
             int[] position = randomSpawn();

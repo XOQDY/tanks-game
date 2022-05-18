@@ -47,3 +47,4 @@ under them and are hard to see.
 * Replay Button
 * At the location where the tank was destroyed, there will be a grave.
 * Select Amount of AI Enemies
+* Bullet Can Bounce Steel block

@@ -11,7 +11,7 @@ public class World extends Observable {
     private Player player1, player2;
     private Thread thread;
     private boolean notOver;
-    private long delayed = 300;
+    private long delayed = 250;
     private int enemyCount = 3;
 
     private Enemy [] enemies;
@@ -69,6 +69,16 @@ public class World extends Observable {
                 while(notOver) {
                     player1.move();
                     checkCollisions(player1);
+                    for (Enemy e : enemies) {
+                        if (e.isAlive()) {
+                            e.move();
+                            checkCollisions(e);
+                            Command command = e.moving(World.this);
+                            if (command != null) {
+                                command.execute();
+                            }
+                        }
+                    }
                     moveBullets();
                     cleanupBullets();
                     checkHit();
@@ -76,14 +86,6 @@ public class World extends Observable {
                     setChanged();
                     notifyObservers();
                     waitFor(delayed);
-                    for (Enemy e : enemies) {
-                        Command command = e.moving(World.this);
-                        if (command != null) {
-                            command.execute();
-                        }
-                        e.move();
-                        checkCollisions(e);
-                    }
                 }
             }
         };
@@ -163,12 +165,12 @@ public class World extends Observable {
         for(Bullet bullet : bullets) {
             for (Player p : tanks) {
                 if(bullet.hit(p)) {
-                    toRemoveBullet.add(bullet);
-                    toRemoveTank.add(p);
-                    p.setAlive(false);
+                    if (!(bullet.getOwner() instanceof Enemy && p instanceof Enemy)) {
+                        toRemoveBullet.add(bullet);
+                        toRemoveTank.add(p);
+                    }
                 }
             }
-
         }
         for(Bullet bullet : toRemoveBullet) {
             bullet.getOwner().setFired(false);
@@ -177,12 +179,23 @@ public class World extends Observable {
         }
         for(Player tank : toRemoveTank) {
             tanks.remove(tank);
+            tank.setAlive(false);
         }
     }
 
     private void checkOver() {
+        int player = 0;
         if (tanks.size() == 1) {
             notOver = false;
+        } else {
+            for (Player tank : tanks) {
+                if (!(tank instanceof Enemy)) {
+                    ++player;
+                }
+            }
+            if (player == 0) {
+                notOver = false;
+            }
         }
     }
 
@@ -224,7 +237,7 @@ public class World extends Observable {
                     bullet.getY() <= 0 ||
                     bullet.getY() >= size) {
                 toRemove.add(bullet);
-            }else if (blocks[bullet.getX()][bullet.getY()] != null && !(blocks[bullet.getX()][bullet.getY()].isPenetrable())) {
+            } else if (blocks[bullet.getX()][bullet.getY()] != null && !blocks[bullet.getX()][bullet.getY()].isPenetrable()) {
                 if (blocks[bullet.getX()][bullet.getY()].isDestructible()) {
                     blocks[bullet.getX()][bullet.getY()] = null;
                 }
@@ -244,8 +257,13 @@ public class World extends Observable {
 
     public void fire_bullet(Player player) {
         if (!player.isFired()) {
-            bullets.add(bulletPool.requestBullet(player.getX(), player.getY(), player.xDirection(), player.yDirection(), player));
+            Bullet bullet = bulletPool.requestBullet(player.getX(), player.getY(), player.xDirection(), player.yDirection(), player);
+            bullet.move();
+            bullet.setCurrentState(player.getCurrentState());
+            bullets.add(bullet);
             player.setFired(true);
         }
+        cleanupBullets();
+        checkHit();
     }
 }

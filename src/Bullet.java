@@ -1,4 +1,4 @@
-public class Bullet extends WObject{
+public class Bullet extends Player{
 
     private Player owner = null;
 

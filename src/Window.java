@@ -67,13 +67,15 @@ public class Window extends JFrame implements Observer {
         public void paint(Graphics g) {
             super.paint(g);
             paintGrids(g);
-            paintBlock(g);
-            paintPlayer1(g);
+            if (world.getPlayer1().isAlive()) {
+                paintPlayer1(g);
+            }
             if (single) {
                 paintEnemies(g);
             } else if (multi && world.getPlayer2().isAlive()) {
                 paintPlayer2(g);
             }
+            paintBlock(g);
             paintBullets(g);
         }
 
@@ -81,20 +83,12 @@ public class Window extends JFrame implements Observer {
             // Background
             g.setColor(Color.black);
             g.fillRect(0, 0, size, size);
-
-            // Lines
-//            g.setColor(Color.black);
-//            int perCell = size/world.getSize();
-//            for(int i = 0; i < world.getSize(); i++) {
-//                g.drawLine(i * perCell, 0, i * perCell, size);
-//                g.drawLine(0, i * perCell, size, i * perCell);
-//            }
         }
 
         private void paintBlock(Graphics g) {
             Image brick = new ImageIcon("image/block/brick.jpg").getImage();
             Image steel = new ImageIcon("image/block/steel.jpg").getImage();
-            Image tree = new ImageIcon("image/block/tree.jpg").getImage();
+            Image tree = new ImageIcon("image/block/tree.png").getImage();
 
             int perCell = size/world.getSize();
             int x;
@@ -178,13 +172,13 @@ public class Window extends JFrame implements Observer {
             for(Bullet bullet : world.getBullets()) {
                 int x = bullet.getX();
                 int y = bullet.getY();
-                if (bullet.getOwner().sameState("north")) {
+                if (bullet.sameState("north")) {
                     imageBullet = new ImageIcon("image/bullet/bullet_north.png").getImage();
-                } else if (bullet.getOwner().sameState("south")) {
+                } else if (bullet.sameState("south")) {
                     imageBullet = new ImageIcon("image/bullet/bullet_south.png").getImage();
-                } else if (bullet.getOwner().sameState("west")) {
+                } else if (bullet.sameState("west")) {
                     imageBullet = new ImageIcon("image/bullet/bullet_west.png").getImage();
-                } else if (bullet.getOwner().sameState("east")) {
+                } else if (bullet.sameState("east")) {
                     imageBullet = new ImageIcon("image/bullet/bullet_east.png").getImage();
                 }
                 g.drawImage(imageBullet, (x * perCell) + (perCell / 3), (y * perCell) + (perCell / 3), CELL_PIXEL_SIZE/3, CELL_PIXEL_SIZE/3, null, null);

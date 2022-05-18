@@ -232,16 +232,17 @@ public class World extends Observable {
     private void cleanupBullets() {
         List<Bullet> toRemove = new ArrayList<Bullet>();
         for(Bullet bullet : bullets) {
-            if(bullet.getX() <= 0 ||
-                    bullet.getX() >= size ||
-                    bullet.getY() <= 0 ||
-                    bullet.getY() >= size) {
+            if(bullet.isExpired()) {
                 toRemove.add(bullet);
             } else if (blocks[bullet.getX()][bullet.getY()] != null && !blocks[bullet.getX()][bullet.getY()].isPenetrable()) {
                 if (blocks[bullet.getX()][bullet.getY()].isDestructible()) {
                     blocks[bullet.getX()][bullet.getY()] = null;
+                    toRemove.add(bullet);
+                } else {
+                    bullet.moveBack();
+                    Command command = bullet.bounce();
+                    command.execute();
                 }
-                toRemove.add(bullet);
             }
         }
         for(Bullet bullet : toRemove) {

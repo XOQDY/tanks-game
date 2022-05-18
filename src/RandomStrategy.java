@@ -5,15 +5,18 @@ public class RandomStrategy implements MoveStrategy {
     private Random random = new Random();
     private int side;
     private long lastCommand;
+    private long lastFire;
 
     public Command getNextMoveCommand(World world, Player myPlayer) {
         Command c;
         long diff = System.currentTimeMillis() - lastCommand;
-        if(diff < 5000) {
+        long diffFire = System.currentTimeMillis() - lastFire;
+        if(diff < 3000) {
             if (myPlayer.isFired()) {
                 return null;
             }
-            else {
+            else if (diffFire > 1000){
+                lastFire = System.currentTimeMillis();
                 c = new CommandFire(myPlayer, world);
                 return c;
             }

@@ -54,7 +54,9 @@ public class Window extends JFrame implements Observer {
             super.paint(g);
             paintGrids(g);
             paintBlock(g);
-            paintPlayer1(g);
+            if (world.getPlayer1().isAlive()) {
+                paintPlayer1(g);
+            }
             if (single) {
                 paintEnemies(g);
             } else if (multi && world.getPlayer2().isAlive()) {
@@ -164,13 +166,13 @@ public class Window extends JFrame implements Observer {
             for(Bullet bullet : world.getBullets()) {
                 int x = bullet.getX();
                 int y = bullet.getY();
-                if (bullet.getOwner().sameState("north")) {
+                if (bullet.sameState("north")) {
                     imageBullet = new ImageIcon("image/bullet/bullet_north.png").getImage();
-                } else if (bullet.getOwner().sameState("south")) {
+                } else if (bullet.sameState("south")) {
                     imageBullet = new ImageIcon("image/bullet/bullet_south.png").getImage();
-                } else if (bullet.getOwner().sameState("west")) {
+                } else if (bullet.sameState("west")) {
                     imageBullet = new ImageIcon("image/bullet/bullet_west.png").getImage();
-                } else if (bullet.getOwner().sameState("east")) {
+                } else if (bullet.sameState("east")) {
                     imageBullet = new ImageIcon("image/bullet/bullet_east.png").getImage();
                 }
                 g.drawImage(imageBullet, (x * perCell) + (perCell / 3), (y * perCell) + (perCell / 3), CELL_PIXEL_SIZE/3, CELL_PIXEL_SIZE/3, null, null);

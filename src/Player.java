@@ -35,6 +35,10 @@ public class Player extends WObject {
         currentState.east(this);
     }
 
+    public State getCurrentState() {
+        return currentState;
+    }
+
     public void setCurrentState(State currentState) {
         this.currentState = currentState;
     }

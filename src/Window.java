@@ -69,14 +69,6 @@ public class Window extends JFrame implements Observer {
             // Background
             g.setColor(Color.black);
             g.fillRect(0, 0, size, size);
-
-            // Lines
-//            g.setColor(Color.black);
-//            int perCell = size/world.getSize();
-//            for(int i = 0; i < world.getSize(); i++) {
-//                g.drawLine(i * perCell, 0, i * perCell, size);
-//                g.drawLine(0, i * perCell, size, i * perCell);
-//            }
         }
 
         private void paintBlock(Graphics g) {
